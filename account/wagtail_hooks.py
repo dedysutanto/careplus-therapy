@@ -1,6 +1,7 @@
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, PermissionHelper, modeladmin_register)
 from .models import Clinic, User
+from crum import get_current_user
 
 
 class ClinicAdmin(ModelAdmin):
@@ -13,6 +14,17 @@ class ClinicAdmin(ModelAdmin):
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     list_display = ('name', 'start', 'end')
     search_fields = ('name',)
+
+    def get_queryset(self, request):
+        #current_user = get_user()
+        current_user = get_current_user()
+        if not current_user.is_superuser:
+            if current_user.clinic.is_no_org:
+                return Clinic.objects.all()
+            else:
+                return Clinic.objects.filter(id=current_user.clinic.id)
+        else:
+            return Clinic.objects.all()
 
 
 modeladmin_register(ClinicAdmin)

@@ -55,6 +55,7 @@ class Students(ClusterableModel):
                                 default='CHRISTIAN', blank=True, null=True)
     school_name = models.CharField(_('Nama Sekolah'), max_length=100, blank=True, null=True)
     biological_child = models.BooleanField(_('Apakah Anak Kandung'), default=True)
+    additional_info = models.TextField('Keterangan', blank=True, null=True)
 
     user = models.ForeignKey(
         User,
@@ -78,6 +79,7 @@ class Students(ClusterableModel):
             FieldRowPanel([FieldPanel('pob'), FieldPanel('dob')]),
             FieldPanel('address'),
             FieldPanel('school_name'),
+            FieldPanel('additional_info')
         ], heading='Data Siswa', classname=''),
 
         TabbedInterface([

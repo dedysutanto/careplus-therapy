@@ -19,6 +19,7 @@ class Therapists(models.Model):
                                 default='CHRISTIAN', blank=True, null=True)
 
     education = models.CharField('Pendidikan', max_length=200, blank=True, null=True)
+    additional_info = models.TextField('Keterangan', blank=True, null=True)
 
     user = models.ForeignKey(
         User,
@@ -40,7 +41,8 @@ class Therapists(models.Model):
             FieldRowPanel([FieldPanel('pob'), FieldPanel('dob')]),
             FieldPanel('mobile'),
             FieldPanel('address'),
-            FieldPanel('education')
+            FieldPanel('education'),
+            FieldPanel('additional_info')
         ])
     ]
 

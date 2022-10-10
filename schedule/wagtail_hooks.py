@@ -18,7 +18,7 @@ class SchedulesAdmin(ModelAdmin):
     add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     add_to_admin_menu = True  # or False to exclude your model from the menu
-    list_display = ['student', 'therapist', 'activity', 'date', 'start', 'end', 'session', ]
+    list_display = ['student', 'therapist', 'activity', 'date', 'start', 'end', 'session', 'additional_info']
     search_fields = ['student__name', 'therapist__name', 'activity__name']
     ordering = ['-date', 'start']
     edit_view_class = SchedulesEditView

@@ -25,10 +25,11 @@ class Schedules(models.Model):
         else:
             return {}
 
-    date = models.DateField()
-    start = models.TimeField()
-    end = models.TimeField(blank=True, null=True)
-    session = models.IntegerField(choices=SESSION, default=1)
+    date = models.DateField('Tanggal')
+    start = models.TimeField('Mulai')
+    end = models.TimeField('Selesai', blank=True, null=True)
+    session = models.IntegerField('Sesi', choices=SESSION, default=1)
+    additional_info = models.TextField('Keterangan', blank=True, null=True)
     student = models.ForeignKey(
         Students,
         on_delete=models.CASCADE,
@@ -68,7 +69,8 @@ class Schedules(models.Model):
             FieldRowPanel([FieldPanel('date'), FieldPanel('start'), FieldPanel('session')]),
             FieldPanel('student'),
             FieldPanel('therapist'),
-            FieldPanel('activity')
+            FieldPanel('activity'),
+            FieldPanel('additional_info')
         ], heading='Setup Schedule', classname='')
     ]
 

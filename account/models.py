@@ -23,11 +23,15 @@ class Clinic(models.Model):
     is_no_org = models.BooleanField(default=False)
     start = models.TimeField(default='08:00')
     end = models.TimeField(default='17:00')
+    address = models.TextField('Alamat', blank=True, null=True)
+    additional_info = models.TextField('Keterangan', blank=True, null=True)
 
     panels = [
         MultiFieldPanel([
             FieldPanel('name'),
-            FieldRowPanel([FieldPanel('start'), FieldPanel('end')], heading='Jam Operasional')
+            FieldRowPanel([FieldPanel('start'), FieldPanel('end')], heading='Jam Operasional'),
+            FieldPanel('address'),
+            FieldPanel('additional_info')
         ])
 
     ]
