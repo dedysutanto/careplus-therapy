@@ -177,6 +177,8 @@ WAGTAIL_DATE_FORMAT = '%d-%m-%Y'
 #WAGTAIL_DATETIME_FORMAT = '%d-%m-%Y %H:%M'
 #DATETIME_INPUT_FORMATS = '%d-%m-%Y %H:%M'
 #WAGTAIL_TIME_FORMAT = '%H:%M'
+WAGTAILADMIN_PERMITTED_LANGUAGES = []
+WAGTAIL_USER_TIME_ZONES = []
 
 USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = '.'
@@ -189,3 +191,32 @@ WAGTAIL_USER_EDIT_FORM = 'account.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'account.forms.CustomUserCreationForm'
 WAGTAIL_USER_CUSTOM_FIELDS = ['clinic']
 
+
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See https://docs.djangoproject.com/en/stable/topics/logging for
+# more details on how to customise your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
