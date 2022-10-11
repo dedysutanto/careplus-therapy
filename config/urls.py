@@ -9,14 +9,14 @@ from django.views.generic.base import RedirectView
 import os
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/login/')),
     path('django-admin/', admin.site.urls),
     path('login/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
 
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's serving mechanism
-    #re_path(r'', include(wagtail_urls)),
-    re_path(r'', include(wagtailadmin_urls)),
+    re_path(r'', include(wagtail_urls)),
 ]
 
 

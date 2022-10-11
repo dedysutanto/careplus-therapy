@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, InlinePanel, \
     FieldRowPanel, MultiFieldPanel, HelpPanel, TabbedInterface
 
+
 class Activities(models.Model):
     name = models.CharField('Nama Activity', max_length=50)
     code = models.CharField('Kode Activity', max_length=5)
