@@ -4,9 +4,38 @@ from .models import Schedules
 from crum import get_current_user
 
 
+class SchedulesPermissionHelper(PermissionHelper):
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+    def user_can_delete_obj(self, user, obj):
+        if obj.is_done:
+            return False
+        else:
+            return True
+
+    def user_can_edit_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+
 class SchedulesEditView(EditView):
     def get_success_url(self):
         return self.edit_url
+
+    def get_page_title(self):
+        return '{} - {}'.format(self.instance.student.name, self.instance.therapist.name)
+
+    def get_page_subtitle(self):
+        return '({})'.format(self.instance.activity)
 
 
 class SchedulesAdmin(ModelAdmin):
@@ -18,11 +47,13 @@ class SchedulesAdmin(ModelAdmin):
     add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     add_to_admin_menu = True  # or False to exclude your model from the menu
-    list_display = ['student', 'therapist', 'activity', 'date', 'start', 'end', 'session', 'additional_info']
+    list_display = ['student', 'therapist', 'activity',
+                    'date', 'start', 'end', 'session', 'is_done', 'additional_info']
     search_fields = ['student__name', 'therapist__name', 'activity__name']
     list_filter = ['date']
     ordering = ['-date', 'start']
     edit_view_class = SchedulesEditView
+    permission_helper_class = SchedulesPermissionHelper
 
     def get_queryset(self, request):
         #current_user = get_user()

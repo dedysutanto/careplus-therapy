@@ -8,6 +8,12 @@ class StudentsEditView(EditView):
     def get_success_url(self):
         return self.edit_url
 
+    def get_page_title(self):
+        return self.instance.name
+
+    def get_page_subtitle(self):
+        return '({} sesi)'.format(self.instance.session)
+
 
 class StudentsAdmin(ModelAdmin):
     model = Students
@@ -18,7 +24,8 @@ class StudentsAdmin(ModelAdmin):
     add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     add_to_admin_menu = True  # or False to exclude your model from the menu
-    list_display = ['name', 'dob', 'calculate_age', 'address', 'additional_info',]
+    list_display = ['name', 'dob', 'calculate_age', 'session', 'session_used', 'session_scheduled',
+                    'address', 'additional_info',]
     search_fields = ('name', 'dob', )
     edit_view_class = StudentsEditView
 

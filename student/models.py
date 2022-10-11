@@ -8,7 +8,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, \
     FieldRowPanel, MultiFieldPanel, HelpPanel, TabbedInterface
 from account.models import User, Clinic
 from crum import get_current_user
-from data_support.models import Packages
+#from data_support.models import Packages
 
 GENDER = [
     ('M', 'Laki-Laki'),
@@ -22,6 +22,7 @@ RELIGION = [
     ('ISLAM', 'Islam'),
     ('HINDU', 'Hindu'),
     ('BUDDHA', 'Budha'),
+    ('KHONGHUCU', 'Khonghucu')
 ]
 
 EDUCATION = [
@@ -57,8 +58,11 @@ class Students(ClusterableModel):
     school_name = models.CharField(_('Nama Sekolah'), max_length=100, blank=True, null=True)
     biological_child = models.BooleanField(_('Apakah Anak Kandung'), default=True)
     additional_info = models.TextField('Keterangan', blank=True, null=True)
-    package_session = models.IntegerField(default=0)
-    total_session = models.IntegerField(default=0)
+    #package_session = models.IntegerField(default=0)
+    session = models.IntegerField('Sesi Tersedia', default=0)
+    session_used = models.IntegerField('Sesi Terpakai', default=0)
+    session_scheduled = models.IntegerField('Sesi Terjadwal', default=0)
+    '''
     package = models.ForeignKey(
         Packages,
         on_delete=models.SET_NULL,
@@ -66,6 +70,7 @@ class Students(ClusterableModel):
         null=True,
         verbose_name='Paket Yang Diambil'
     )
+    '''
 
     user = models.ForeignKey(
         User,
@@ -82,7 +87,6 @@ class Students(ClusterableModel):
     )
 
     panels = [
-        InlinePanel('related_package', heading='Paket Yang Diambil', label='Paket', classname='collapse'),
         MultiFieldPanel([
             FieldPanel('name'),
             FieldPanel('call_name'),
@@ -127,35 +131,6 @@ class Students(ClusterableModel):
             self.clinic = current_user.clinic
 
         return super(Students, self).save()
-
-
-class Packages(Orderable):
-    datetime = models.DateTimeField(auto_now=True)
-    package = models.ForeignKey(
-        Packages,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name='Paket Yang Diambil'
-    )
-
-    student = ParentalKey(
-        'Students',
-        on_delete=models.CASCADE,
-        related_name='related_package',
-    )
-
-    panels = [
-        FieldPanel('package')
-    ]
-
-    class Meta:
-        db_table = 'student_package'
-        verbose_name = 'Paket Siswa'
-        verbose_name_plural = 'Paket Siswa'
-
-    def __str__(self):
-        return '%s' % self.package
 
 
 class ParentFather(Orderable):
@@ -276,3 +251,34 @@ class Sibling(Orderable):
             return '%s' % self.younger_sibling_name
         else:
             return None
+
+
+'''
+class Packages(Orderable):
+    datetime = models.DateTimeField(auto_now=True)
+    package = models.ForeignKey(
+        Packages,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name='Paket Yang Diambil'
+    )
+
+    student = ParentalKey(
+        'Students',
+        on_delete=models.CASCADE,
+        related_name='related_package',
+    )
+
+    panels = [
+        FieldPanel('package')
+    ]
+
+    class Meta:
+        db_table = 'student_package'
+        verbose_name = 'Paket Siswa'
+        verbose_name_plural = 'Paket Siswa'
+
+    def __str__(self):
+        return '%s' % self.package
+'''

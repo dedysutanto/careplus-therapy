@@ -14,6 +14,7 @@ SESSION = [
     (1, '1'),
     (2, '2'),
     (3, '3'),
+    (4, '4'),
 ]
 
 
@@ -30,6 +31,8 @@ class Schedules(models.Model):
     end = models.TimeField('Selesai', blank=True, null=True)
     session = models.IntegerField('Sesi', choices=SESSION, default=1)
     additional_info = models.TextField('Keterangan', blank=True, null=True)
+    is_done = models.BooleanField('Terapi Selesai', default=False)
+
     student = models.ForeignKey(
         Students,
         on_delete=models.CASCADE,
@@ -70,7 +73,8 @@ class Schedules(models.Model):
             FieldPanel('student'),
             FieldPanel('therapist'),
             FieldPanel('activity'),
-            FieldPanel('additional_info')
+            FieldPanel('additional_info'),
+            FieldPanel('is_done')
         ], heading='Setup Schedule', classname='')
     ]
 
@@ -92,18 +96,59 @@ class Schedules(models.Model):
         Check Time Schedule against operational
         :return:
         '''
-        print(self.start)
-        print(self.user.clinic.start)
         if self.start < self.user.clinic.start or self.start > self.user.clinic.end:
             raise ValidationError('Jam mulai terapi diluar jam operational klinik')
 
         end = time(hour=self.start.hour + self.session, minute=self.start.minute)
 
-        print(self.end)
-        print(self.user.clinic.end)
-
         if end < self.user.clinic.start or end > self.user.clinic.end:
             raise ValidationError('Jam selesai terapi diluar jam operational klinik')
+
+        '''
+        Check if Student still have session
+        '''
+        if (self.student.session + self.session) < self.session:
+            raise ValidationError(
+                'Sesi siswa tidak cukup. {} hanya memilik {} sesi tersisa'.format(self.student, self.student.session)
+            )
+
+        '''
+        Check if the therapist schedules are conflict
+        '''
+        therapist_schedules = Schedules.objects.filter(therapist=self.therapist, is_done=False)
+
+        is_conflicted = False
+        if therapist_schedules:
+            for schedule in therapist_schedules:
+                if self.date == schedule.date:
+                    if self.start == schedule.start:
+                        is_conflicted = True
+                    if schedule.start < self.start < schedule.end:
+                        is_conflicted = True
+                    if schedule.start < end < schedule.end:
+                        is_conflicted = True
+
+            if is_conflicted:
+                raise ValidationError('Jadwal therapist {} konflik!'.format(self.therapist))
+
+        '''
+        Check if the Student schedules are conflict
+        '''
+        student_schedules = Schedules.objects.filter(student=self.student, is_done=False)
+
+        is_conflicted = False
+        if student_schedules:
+            for schedule in student_schedules:
+                if self.date == schedule.date:
+                    if self.start == schedule.start:
+                        is_conflicted = True
+                    if schedule.start < self.start < schedule.end:
+                        is_conflicted = True
+                    if schedule.start < end < schedule.end:
+                        is_conflicted = True
+
+            if is_conflicted:
+                raise ValidationError('Jadwal siswa {} konflik!'.format(self.student))
 
     def save(self):
         if self.user is None:
