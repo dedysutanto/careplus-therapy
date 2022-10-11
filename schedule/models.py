@@ -107,7 +107,7 @@ class Schedules(models.Model):
         '''
         Check if Student still have session
         '''
-        if (self.student.session + self.session) < self.session:
+        if self.student.session < self.session and self.id is None:
             raise ValidationError(
                 'Sesi siswa tidak cukup. {} hanya memilik {} sesi tersisa'.format(self.student, self.student.session)
             )
