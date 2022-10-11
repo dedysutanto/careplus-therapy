@@ -50,7 +50,7 @@ class SchedulesAdmin(ModelAdmin):
     list_display = ['student', 'therapist', 'activity',
                     'date', 'start', 'end', 'session', 'is_done', 'additional_info']
     search_fields = ['student__name', 'therapist__name', 'activity__name']
-    list_filter = ['date']
+    list_filter = ['date', 'is_done']
     ordering = ['-date', 'start']
     edit_view_class = SchedulesEditView
     permission_helper_class = SchedulesPermissionHelper

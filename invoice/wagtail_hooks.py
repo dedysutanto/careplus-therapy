@@ -26,7 +26,7 @@ class InvoicesAdmin(ModelAdmin):
     add_to_admin_menu = True  # or False to exclude your model from the menu
     list_display = ['datetime', 'student', 'calculate_total', 'is_paid']
     search_fields = ('student__name',)
-    list_filter = ['datetime']
+    list_filter = ['datetime', 'is_paid']
     edit_view_class = InvoicesEditView
 
     def get_queryset(self, request):

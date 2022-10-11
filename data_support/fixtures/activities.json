@@ -1,0 +1,72 @@
+[
+{
+    "model": "data_support.activities",
+    "pk": 1,
+    "fields": {
+        "name": "Observasi",
+        "code": "OB",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.activities",
+    "pk": 2,
+    "fields": {
+        "name": "Terapi wicara",
+        "code": "TW",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.activities",
+    "pk": 3,
+    "fields": {
+        "name": "Terapi perilaku",
+        "code": "BT",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.activities",
+    "pk": 4,
+    "fields": {
+        "name": "Terapi sensori integrasi",
+        "code": "SI",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.activities",
+    "pk": 5,
+    "fields": {
+        "name": "Terapi edukasi",
+        "code": "ET",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.activities",
+    "pk": 6,
+    "fields": {
+        "name": "Terapi okupasi",
+        "code": "OT",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.activities",
+    "pk": 7,
+    "fields": {
+        "name": "Terapi fisio",
+        "code": "FT",
+        "user": 2,
+        "clinic": 1
+    }
+}
+]
