@@ -107,11 +107,18 @@ class Schedules(models.Model):
         '''
         Check if Student still have session
         '''
-        if self.student.session < self.session and self.id is None:
-            raise ValidationError(
-                'Sesi siswa tidak cukup. {} hanya memilik {} sesi tersisa'.format(self.student, self.student.session)
-            )
-
+        if self.id:
+            if (self.student.session + self.session) < self.session and self.id is None:
+                raise ValidationError(
+                    'Sesi siswa tidak cukup. {} hanya memilik {} sesi tersisa'.format(self.student,
+                                                                                      self.student.session)
+                )
+        else:
+            if self.student.session < self.session:
+                raise ValidationError(
+                    'Sesi siswa tidak cukup. {} hanya memilik {} sesi tersisa'.format(self.student,
+                                                                                      self.student.session)
+                )
         '''
         Check if the therapist schedules are conflict
         '''
