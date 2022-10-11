@@ -8,7 +8,7 @@ from crum import get_current_user
 from datetime import timedelta, time
 from wagtail.admin.panels import FieldPanel, InlinePanel, \
     FieldRowPanel, MultiFieldPanel, HelpPanel, TabbedInterface
-
+from django.core.exceptions import ValidationError
 
 SESSION = [
     (1, '1'),
@@ -81,6 +81,24 @@ class Schedules(models.Model):
 
     def __str__(self):
         return '%s' % self.start
+
+    def clean(self):
+        '''
+        Check Time Schedule against operational
+        :return:
+        '''
+        print(self.start)
+        print(self.user.clinic.start)
+        if self.start < self.user.clinic.start or self.start > self.user.clinic.end:
+            raise ValidationError('Jam mulai terapi diluar jam operational klinik')
+
+        end = time(hour=self.start.hour + self.session, minute=self.start.minute)
+
+        print(self.end)
+        print(self.user.clinic.end)
+
+        if end < self.user.clinic.start or end > self.user.clinic.end:
+            raise ValidationError('Jam selesai terapi diluar jam operational klinik')
 
     def save(self):
         if self.user is None:

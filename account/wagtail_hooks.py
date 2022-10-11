@@ -12,7 +12,7 @@ class ClinicAdmin(ModelAdmin):
     menu_icon = 'group'  # change as required
     add_to_settings_menu = True  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
-    list_display = ('name', 'start', 'end')
+    list_display = ('name', 'start', 'end', 'address')
     search_fields = ('name',)
 
     def get_queryset(self, request):
