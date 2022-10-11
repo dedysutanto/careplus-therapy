@@ -41,6 +41,7 @@ class Therapists(models.Model):
             FieldRowPanel([FieldPanel('pob'), FieldPanel('dob')]),
             FieldPanel('mobile'),
             FieldPanel('address'),
+            FieldPanel('religion'),
             FieldPanel('education'),
             FieldPanel('additional_info')
         ])
