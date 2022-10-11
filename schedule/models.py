@@ -76,8 +76,8 @@ class Schedules(models.Model):
 
     class Meta:
         db_table = 'schedule'
-        verbose_name = 'Schedule'
-        verbose_name_plural = 'Schedules'
+        verbose_name = 'Jadwal'
+        verbose_name_plural = 'Jadwal'
 
     def __str__(self):
         return '%s' % self.start

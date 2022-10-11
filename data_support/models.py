@@ -47,3 +47,46 @@ class Activities(models.Model):
 
         return super(Activities, self).save()
 
+
+class Packages(models.Model):
+    name = models.CharField('Nama Paket', max_length=50)
+    price = models.IntegerField('Harga Paket')
+    session = models.IntegerField('Jumlah Sesi')
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        verbose_name=_('Owner'),
+        null=True
+    )
+
+    clinic = models.ForeignKey(
+        Clinic,
+        on_delete=models.SET_NULL,
+        verbose_name=_('Klinik'),
+        null=True
+    )
+
+    panels = [
+        MultiFieldPanel([
+            #HelpPanel(content='Kode Activity maximum 5 karakter'),
+            FieldRowPanel([FieldPanel('name'), FieldPanel('session')]),
+            FieldPanel('price')
+        ])
+    ]
+
+    class Meta:
+        db_table = 'packages'
+        verbose_name = 'Paket'
+        verbose_name_plural = 'Paket'
+
+    def __str__(self):
+        return '%s' % self.name
+
+    def save(self):
+        if self.user is None:
+            current_user = get_current_user()
+            self.user = current_user
+            self.clinic = current_user.clinic
+
+        return super(Activities, self).save()
