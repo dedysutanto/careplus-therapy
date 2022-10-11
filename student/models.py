@@ -58,6 +58,7 @@ class Students(ClusterableModel):
     biological_child = models.BooleanField(_('Apakah Anak Kandung'), default=True)
     additional_info = models.TextField('Keterangan', blank=True, null=True)
     package_session = models.IntegerField(default=0)
+    total_session = models.IntegerField(default=0)
     package = models.ForeignKey(
         Packages,
         on_delete=models.SET_NULL,
