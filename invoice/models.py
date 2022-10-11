@@ -13,6 +13,7 @@ from student.models import Students
 from data_support.models import InvoiceItems
 from django.utils.timezone import now
 from django.db.models import Sum
+from django.core.exceptions import ValidationError
 
 
 class Invoices(ClusterableModel):
@@ -58,6 +59,12 @@ class Invoices(ClusterableModel):
         db_table = 'invoices'
         verbose_name = 'Invoice'
         verbose_name_plural = 'Invoices'
+
+    def clean(self):
+        invoice_item = InvoiceItems.objects.filter(invoice=self)
+
+        if not invoice_item:
+            raise ValidationError('Item Invoice harus ada. Silakan ditambahkan Invoice Item')
 
     def save(self):
         if self.user is None:
