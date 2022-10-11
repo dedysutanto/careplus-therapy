@@ -24,7 +24,10 @@ class SchedulesPermissionHelper(PermissionHelper):
         if user.is_superuser:
             return False
         else:
-            return True
+            if obj.is_done:
+                return False
+            else:
+                return True
 
 
 class SchedulesEditView(EditView):

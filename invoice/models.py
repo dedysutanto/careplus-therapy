@@ -68,8 +68,11 @@ class Invoices(ClusterableModel):
         return super(Invoices, self).save()
 
     def calculate_total(self):
+        total_text = 0
         total = InvoiceItems.objects.filter(invoice=self).aggregate(Sum('sub_total'))
-        return 'Rp. {:,}'.format(total['sub_total__sum']).replace(',', '.')
+        if total['sub_total__sum']:
+            total_text = total['sub_total__sum']
+        return 'Rp. {:,}'.format(total_text).replace(',', '.')
     calculate_total.short_description = 'Total'
 
 
