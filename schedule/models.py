@@ -83,6 +83,11 @@ class Schedules(models.Model):
         return '%s' % self.start
 
     def clean(self):
+        if self.user is None:
+            current_user = get_current_user()
+            self.user = current_user
+            self.clinic = current_user.clinic
+
         '''
         Check Time Schedule against operational
         :return:
