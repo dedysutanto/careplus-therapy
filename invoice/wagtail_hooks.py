@@ -1,3 +1,4 @@
+from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, modeladmin_register, PermissionHelper, EditView, ButtonHelper)
 from .models import Invoices

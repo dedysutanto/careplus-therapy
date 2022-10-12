@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
+from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.models import Orderable
 from modelcluster.fields import ParentalKey
 from config.utils import calculate_age
@@ -14,6 +15,30 @@ from data_support.models import InvoiceItems
 from django.utils.timezone import now
 from django.db.models import Sum
 from django.core.exceptions import ValidationError
+
+
+class InvoicesForm(WagtailAdminPageForm):
+    class Meta:
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        is_invoice_item = False
+        for form in self.formsets['related_invoice_item'].forms:
+
+            if form.is_valid():
+                cleaned_form_data = form.clean()
+                print(cleaned_form_data)
+                item = cleaned_form_data.get('item')
+                print(item)
+                if item:
+                    is_invoice_item = True
+
+        if is_invoice_item:
+            return cleaned_data
+        else:
+            raise ValidationError('Item Invoice harus ada. Silakan ditambahkan Invoice Item')
 
 
 class Invoices(ClusterableModel):
@@ -54,6 +79,8 @@ class Invoices(ClusterableModel):
         InlinePanel('related_invoice_item', heading='Items', label='Detail Item'),
         FieldPanel('is_paid'),
     ]
+
+    base_form_class = InvoicesForm
 
     class Meta:
         db_table = 'invoices'
