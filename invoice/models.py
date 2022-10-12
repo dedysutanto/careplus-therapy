@@ -60,13 +60,14 @@ class Invoices(ClusterableModel):
         verbose_name = 'Invoice'
         verbose_name_plural = 'Invoices'
 
+    '''
     def clean(self):
         invoice_item = InvoiceItems.objects.filter(invoice=self)
 
         if not invoice_item:
             raise ValidationError('Item Invoice harus ada. Silakan ditambahkan Invoice Item')
-
     '''
+
     def save(self):
         if self.user is None:
             current_user = get_current_user()
@@ -74,7 +75,6 @@ class Invoices(ClusterableModel):
             self.clinic = current_user.clinic
 
         return super(Invoices, self).save()
-    '''
 
     def calculate_total(self):
         total_text = 0
