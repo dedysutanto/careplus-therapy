@@ -29,9 +29,7 @@ class InvoicesForm(WagtailAdminPageForm):
 
             if form.is_valid():
                 cleaned_form_data = form.clean()
-                print(cleaned_form_data)
                 item = cleaned_form_data.get('item')
-                print(item)
                 if item:
                     is_invoice_item = True
 
