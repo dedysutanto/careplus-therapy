@@ -27,8 +27,11 @@
                 </tr>
             {% endfor %}
             </table>
+            <a class="button" href="{{ create_url }}">Tambah Jadwal</a>
+
         {% else %}
-            <h2>Tidak Ada Sesi Terapi hari ini</h2>
+            <h2 style="text-align: center;">Belum Ada Sesi Terapi.</h2>
+            <a class="button" href="{{ create_url }}">Buat Jadwal</a>
         {% endif %}
 
     </section>

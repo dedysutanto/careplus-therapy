@@ -7,6 +7,7 @@ from crum import get_current_user
 from random import randint
 from django.utils.translation import gettext as _
 from django.utils.timezone import now, timedelta
+from schedule.wagtail_hooks import SchedulesAdmin
 
 
 class SummaryPanel(Component):
@@ -96,9 +97,12 @@ class ScheduleTodayPanel(Component):
         context = super().get_context_data(parent_context)
         panel_title = 'Jadwal Hari Ini'
 
+        url_helper = SchedulesAdmin().url_helper
+
         context['panel_title'] = panel_title
         context['schedule_today'] = self.schedule_today
         context['today'] = self.today
+        context['create_url'] = url_helper.get_action_url('create')
 
         return context
 
