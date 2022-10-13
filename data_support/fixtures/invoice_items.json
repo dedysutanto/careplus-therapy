@@ -1,0 +1,74 @@
+[
+{
+    "model": "data_support.invoiceitems",
+    "pk": 1,
+    "fields": {
+        "name": "Biaya Pendaftaran",
+        "price": 110000,
+        "session": 0,
+        "additional_info": "",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.invoiceitems",
+    "pk": 2,
+    "fields": {
+        "name": "Biaya Buku Penghubung",
+        "price": 50000,
+        "session": 0,
+        "additional_info": "",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.invoiceitems",
+    "pk": 3,
+    "fields": {
+        "name": "Biaya Observasi",
+        "price": 260000,
+        "session": 1,
+        "additional_info": "Observasi dilakukan selama 1 sesi",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.invoiceitems",
+    "pk": 4,
+    "fields": {
+        "name": "Biaya Terapi per sesi",
+        "price": 200000,
+        "session": 1,
+        "additional_info": "1 Sesi = 1 Jam",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.invoiceitems",
+    "pk": 5,
+    "fields": {
+        "name": "Paket 4 Jam",
+        "price": 780000,
+        "session": 4,
+        "additional_info": "",
+        "user": 2,
+        "clinic": 1
+    }
+},
+{
+    "model": "data_support.invoiceitems",
+    "pk": 6,
+    "fields": {
+        "name": "Paket 12 Jam",
+        "price": 2325000,
+        "session": 12,
+        "additional_info": "",
+        "user": 2,
+        "clinic": 1
+    }
+}
+]

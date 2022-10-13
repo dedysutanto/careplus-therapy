@@ -24,10 +24,13 @@ class SchedulesPermissionHelper(PermissionHelper):
         if user.is_superuser:
             return False
         else:
+            return True
+            '''
             if obj.is_done:
                 return False
             else:
                 return True
+            '''
 
 
 class SchedulesEditView(EditView):
@@ -50,13 +53,15 @@ class SchedulesAdmin(ModelAdmin):
     add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     add_to_admin_menu = True  # or False to exclude your model from the menu
-    list_display = ['student', 'therapist', 'activity',
-                    'date', 'start', 'end', 'session', 'is_done', 'additional_info']
+    list_display = ['date', 'start', 'end', 'student', 'therapist', 'activity',
+                    'session', 'is_done', 'additional_info']
     search_fields = ['student__name', 'therapist__name', 'activity__name']
-    list_filter = ['date', 'is_done']
+    list_filter = ['date', 'therapist__name', 'is_done']
     ordering = ['-date', 'start']
     edit_view_class = SchedulesEditView
     permission_helper_class = SchedulesPermissionHelper
+    form_view_extra_js = ['schedule/js/schedule.js']
+    #inspect_view_enabled = True
 
     def get_queryset(self, request):
         #current_user = get_user()

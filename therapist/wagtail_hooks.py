@@ -4,6 +4,29 @@ from .models import Therapists
 from crum import get_current_user
 
 
+class TherapistPermissionHelper(PermissionHelper):
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+    def user_can_delete_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return False
+
+    def user_can_edit_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+
 class TherapistsEditView(EditView):
     def get_success_url(self):
         return self.edit_url
@@ -27,6 +50,7 @@ class TherapistsAdmin(ModelAdmin):
     list_display = ['name', 'mobile', 'address', 'education', 'additional_info']
     search_fields = ('name', 'mobile',)
     edit_view_class = TherapistsEditView
+    permission_helper_class = TherapistPermissionHelper
 
     def get_queryset(self, request):
         #current_user = get_user()

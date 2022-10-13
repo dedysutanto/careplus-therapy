@@ -10,10 +10,40 @@ class InvoicesEditView(EditView):
         return self.edit_url
 
     def get_page_title(self):
-        return self.instance.student.name
+        return self.instance.number
 
     def get_page_subtitle(self):
         return self.instance.calculate_total
+
+
+class InvoicesPermissionHelper(PermissionHelper):
+
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+    def user_can_delete_obj(self, user, obj):
+        if obj.is_paid:
+            return False
+        else:
+            return True
+
+    def user_can_edit_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+            '''
+            if obj.is_paid:
+                return False
+            else:
+                return True
+            '''
 
 
 class InvoicesAdmin(ModelAdmin):
@@ -25,10 +55,13 @@ class InvoicesAdmin(ModelAdmin):
     add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     add_to_admin_menu = True  # or False to exclude your model from the menu
-    list_display = ['datetime', 'student', 'calculate_total', 'is_paid']
+    list_display = ['number', 'datetime', 'student', 'calculate_total', 'is_paid']
     search_fields = ('student__name',)
     list_filter = ['datetime', 'is_paid']
     edit_view_class = InvoicesEditView
+    permission_helper_class = InvoicesPermissionHelper
+    form_view_extra_js = ['invoice/js/invoice.js']
+    # inspect_view_enabled = True
 
     def get_queryset(self, request):
         #current_user = get_user()

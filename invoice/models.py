@@ -47,6 +47,7 @@ class Invoices(ClusterableModel):
         else:
             return {}
 
+    number = models.CharField(_('Nomor Invoice'), max_length=12, unique=True)
     datetime = models.DateTimeField(_('Tanggal'), default=now)
     student = models.ForeignKey(
         Students,
@@ -54,6 +55,8 @@ class Invoices(ClusterableModel):
         verbose_name='Siswa',
         limit_choices_to=limit_choices_to_current_user
     )
+
+    additional_info = models.TextField('Keterangan', blank=True, null=True)
 
     is_paid = models.BooleanField(_('Sudah Dibayar'), default=False)
     #is_cancel = models.BooleanField(_('Batal'), default=False)
@@ -75,6 +78,7 @@ class Invoices(ClusterableModel):
     panels = [
         FieldRowPanel([FieldPanel('student'), FieldPanel('datetime')]),
         InlinePanel('related_invoice_item', heading='Items', label='Detail Item'),
+        FieldPanel('additional_info'),
         FieldPanel('is_paid'),
     ]
 
@@ -98,6 +102,12 @@ class Invoices(ClusterableModel):
             current_user = get_current_user()
             self.user = current_user
             self.clinic = current_user.clinic
+
+        if len(str(self.number)) != 12:
+            number = Invoices.objects.filter(user=self.user, student=self.student).count() + 1
+            prefix = 'INV{:03d}{:03d}'.format(self.user.id, self.student.id)
+            self.number = '{}{:03d}'.format(prefix, number)
+            print('Invoice', self.number)
 
         return super(Invoices, self).save()
 

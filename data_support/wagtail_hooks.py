@@ -4,6 +4,30 @@ from .models import Activities, InvoiceItems
 from crum import get_current_user
 
 
+class DataSupportPermissionHelper(PermissionHelper):
+
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+    def user_can_delete_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+    def user_can_edit_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+
 class ActivitiesAdmin(ModelAdmin):
     model = Activities
     #button_helper_class = ControllerButtonHelper   # Uncomment this to enable button
@@ -14,6 +38,7 @@ class ActivitiesAdmin(ModelAdmin):
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     list_display = ('name', 'code')
     search_fields = ('name', 'code')
+    permission_helper_class = DataSupportPermissionHelper
 
     def get_queryset(self, request):
         #current_user = get_user()
@@ -37,6 +62,7 @@ class InvoiceItemsAdmin(ModelAdmin):
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     list_display = ('name', 'price', 'session', 'additional_info')
     search_fields = ('name',)
+    permission_helper_class = DataSupportPermissionHelper
 
     def get_queryset(self, request):
         #current_user = get_user()

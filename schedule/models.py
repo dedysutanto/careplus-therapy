@@ -127,13 +127,14 @@ class Schedules(models.Model):
         is_conflicted = False
         if therapist_schedules:
             for schedule in therapist_schedules:
-                if self.date == schedule.date:
-                    if self.start == schedule.start:
-                        is_conflicted = True
-                    if schedule.start < self.start < schedule.end:
-                        is_conflicted = True
-                    if schedule.start < end < schedule.end:
-                        is_conflicted = True
+                if self.id != schedule.id:
+                    if self.date == schedule.date:
+                        if self.start == schedule.start:
+                            is_conflicted = True
+                        if schedule.start < self.start < schedule.end:
+                            is_conflicted = True
+                        if schedule.start < end < schedule.end:
+                            is_conflicted = True
 
             if is_conflicted:
                 raise ValidationError('Jadwal therapist {} konflik!'.format(self.therapist))
@@ -146,13 +147,14 @@ class Schedules(models.Model):
         is_conflicted = False
         if student_schedules:
             for schedule in student_schedules:
-                if self.date == schedule.date:
-                    if self.start == schedule.start:
-                        is_conflicted = True
-                    if schedule.start < self.start < schedule.end:
-                        is_conflicted = True
-                    if schedule.start < end < schedule.end:
-                        is_conflicted = True
+                if self.id != schedule.id:
+                    if self.date == schedule.date:
+                        if self.start == schedule.start:
+                            is_conflicted = True
+                        if schedule.start < self.start < schedule.end:
+                            is_conflicted = True
+                        if schedule.start < end < schedule.end:
+                            is_conflicted = True
 
             if is_conflicted:
                 raise ValidationError('Jadwal siswa {} konflik!'.format(self.student))

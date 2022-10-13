@@ -4,6 +4,27 @@ from .models import Clinic, User
 from crum import get_current_user
 
 
+class AccountPermissionHelper(PermissionHelper):
+
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        if user.is_superuser:
+            return True
+        else:
+            return False
+
+    def user_can_delete_obj(self, user, obj):
+        if user.is_superuser:
+            return True
+        else:
+            return False
+
+    def user_can_edit_obj(self, user, obj):
+        return True
+
+
 class ClinicAdmin(ModelAdmin):
     model = Clinic
     #button_helper_class = ControllerButtonHelper   # Uncomment this to enable button
@@ -14,6 +35,7 @@ class ClinicAdmin(ModelAdmin):
     exclude_from_explorer = False  # or True to exclude pages of this type from Wagtail's explorer view
     list_display = ('name', 'start', 'end', 'address')
     search_fields = ('name',)
+    permission_helper_class = AccountPermissionHelper
 
     def get_queryset(self, request):
         #current_user = get_user()

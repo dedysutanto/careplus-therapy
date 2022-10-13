@@ -4,6 +4,29 @@ from .models import Students
 from crum import get_current_user
 
 
+class StudentPermissionHelper(PermissionHelper):
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+    def user_can_delete_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return False
+
+    def user_can_edit_obj(self, user, obj):
+        if user.is_superuser:
+            return False
+        else:
+            return True
+
+
 class StudentsEditView(EditView):
     def get_success_url(self):
         return self.edit_url
@@ -28,6 +51,7 @@ class StudentsAdmin(ModelAdmin):
                     'address', 'additional_info',]
     search_fields = ('name', 'dob', )
     edit_view_class = StudentsEditView
+    permission_helper_class = StudentPermissionHelper
 
     def get_queryset(self, request):
         #current_user = get_user()
