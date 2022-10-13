@@ -1,0 +1,58 @@
+{% load i18n wagtailadmin_tags %}
+    <section class="panel summary nice-padding">
+        <h1 style="text-align: center">Periode: {{ period_start|date:"d M Y" }} - {{ period_end|date:"d M Y" }}</h1>
+        <table style="width: 90%;">
+            <tr>
+                <td style="text-align: center;">
+                    <h2>
+                    Siswa: {{ students }}
+                    </h2>
+                </td>
+                <td style="text-align: center;">
+                    <h2>
+                    Therapist: {{ therapists }}
+                    </h2>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 90%">
+            <tr>
+                <td style="text-align: center;">
+                    <h2>
+                    Sesi Terlaksana: {{ session_done }}
+                    </h2>
+                </td>
+                <td style="text-align: center;">
+                    <h2>
+                    Sesi Belum Terlaksana: {{ session_scheduled }}
+                    </h2>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 90%">
+            <tr>
+                <td style="text-align: center;">
+                    <h2>
+                    Invoice Terbayar: {{ invoice_paid }}
+                    </h2>
+                </td>
+                <td style="text-align: center;">
+                    <h2>
+                    Invoice Belum Terbayar: {{ invoice_unpaid }}
+                    </h2>
+                </td>
+            </tr>
+
+        </table>
+    </section>
+
+{% if summary_items %}
+    <section class="panel summary nice-padding">
+        <h2 class="visuallyhidden">{% trans "Site summary" %}</h2>
+        <ul class="stats">
+            {% for item in summary_items %}
+                {% component item %}
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}

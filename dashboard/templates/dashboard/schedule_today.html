@@ -1,0 +1,34 @@
+{% load i18n wagtailadmin_tags %}
+    <section class="panel summary nice-padding" style="margin-top: 50px; margin-bottom: 50px">
+        <h1 style="text-align: center">Jadwal Hari {{ today|date:"l, d M Y" }}</h1>
+
+        {% if schedule_today %}
+            <table style="width: 90%; border-collapse: collapse;">
+                <tr style="border-bottom: 1pt solid black;">
+                    <td><h2>Jam Sesi</h2></td>
+                    <td><h2>Siswa</h2></td>
+                    <td><h2>Therapist</h2></td>
+                    <td><h2>Activity</h2></td>
+                    <td><h2>Status</h2></td>
+                </tr>
+            {% for schedule in schedule_today %}
+                <tr>
+                    <td><h2>{{ schedule.start }} - {{ schedule.end }}</h2></td>
+                    <td><h2>{{ schedule.student }}</h2></td>
+                    <td><h2>{{ schedule.therapist }}</h2></td>
+                    <td><h2>{{ schedule.activity }}</h2></td>
+                    <td>
+                        {% if schedule.is_done %}
+                        <h2 style="color: green;">SELESAI</h2>
+                        {% else %}
+                        <h2 style="color: red;">BELUM</h2>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% else %}
+            <h2>Tidak Ada Sesi Terapi hari ini</h2>
+        {% endif %}
+
+    </section>
