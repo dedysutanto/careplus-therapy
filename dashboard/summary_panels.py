@@ -87,22 +87,26 @@ class ScheduleTodayPanel(Component):
     def __init__(self):
         user = get_current_user()
         self.today = now()
+        self.url_helper = SchedulesAdmin().url_helper
         if user.is_superuser:
             self.schedule_today = Schedules.objects.filter(date=self.today)
         elif user.clinic:
             self.schedule_today = Schedules.objects.filter(
                 clinic=user.clinic, date=self.today)
 
+        if self.schedule_today:
+            for schedule in self.schedule_today:
+                schedule.edit_url = self.url_helper.get_action_url('edit', schedule.id)
+
     def get_context_data(self, parent_context):
         context = super().get_context_data(parent_context)
         panel_title = 'Jadwal Hari Ini'
 
-        url_helper = SchedulesAdmin().url_helper
 
         context['panel_title'] = panel_title
         context['schedule_today'] = self.schedule_today
         context['today'] = self.today
-        context['create_url'] = url_helper.get_action_url('create')
+        context['create_url'] = self.url_helper.get_action_url('create')
 
         return context
 

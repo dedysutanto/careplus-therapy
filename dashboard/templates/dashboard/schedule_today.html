@@ -19,9 +19,9 @@
                     <td><h2>{{ schedule.activity }}</h2></td>
                     <td>
                         {% if schedule.is_done %}
-                        <h2 style="color: green;">SELESAI</h2>
+                        <a class="button button-primary" href="{{ schedule.edit_url }}">SELESAI</a>
                         {% else %}
-                        <h2 style="color: red;">BELUM</h2>
+                        <a class="button button-secondary" href="{{ schedule.edit_url }}">BELUM</a>
                         {% endif %}
                     </td>
                 </tr>
