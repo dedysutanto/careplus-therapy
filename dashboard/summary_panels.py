@@ -3,11 +3,22 @@ from student.models import Students
 from therapist.models import Therapists
 from schedule.models import Schedules
 from invoice.models import InvoiceItems, Invoices
+from data_support.models import Activities
 from crum import get_current_user
 from random import randint
 from django.utils.translation import gettext as _
 from django.utils.timezone import now, timedelta
 from schedule.wagtail_hooks import SchedulesAdmin
+from django.core.exceptions import ObjectDoesNotExist
+
+
+def get_current_period():
+    today = now()
+    prev_month = today.replace(day=1) - timedelta(days=1)
+    period_start = prev_month.replace(day=26, hour=0)
+    period_end = today.replace(day=25, hour=0)
+
+    return period_start, period_end
 
 
 class SummaryPanel(Component):
@@ -15,10 +26,11 @@ class SummaryPanel(Component):
     template_name = "dashboard/site_summary.html"
 
     def __init__(self):
-        today = now()
-        prev_month = today.replace(day=1) - timedelta(days=1)
-        self.period_start = prev_month.replace(day=26, hour=0)
-        self.period_end = today.replace(day=25, hour=0)
+        # today = now()
+        # prev_month = today.replace(day=1) - timedelta(days=1)
+        # self.period_start = prev_month.replace(day=26, hour=0)
+        # self.period_end = today.replace(day=25, hour=0)
+        self.period_start, self.period_end = get_current_period()
         # print(self.period_start)
         # print(self.period_end)
 
@@ -102,11 +114,76 @@ class ScheduleTodayPanel(Component):
         context = super().get_context_data(parent_context)
         panel_title = 'Jadwal Hari Ini'
 
-
         context['panel_title'] = panel_title
         context['schedule_today'] = self.schedule_today
         context['today'] = self.today
         context['create_url'] = self.url_helper.get_action_url('create')
+
+        return context
+
+
+class SummaryTherapist(Component):
+    order = 55
+    template_name = 'dashboard/summary_therapist.html'
+
+    def __init__(self):
+        user = get_current_user()
+        self.period_start, self.period_end = get_current_period()
+        if user.is_superuser:
+            self.therapists = Therapists.objects.all()
+        elif user.clinic:
+            self.therapists = Therapists.objects.filter(clinic=user.clinic)
+
+        observation = Activities.objects.get(name__icontains='obser')
+        print(observation)
+        self.therapists_summary = []
+        for therapist in self.therapists:
+            print(therapist)
+            schedule_ob = Schedules.objects.filter(
+                date__range=[self.period_start, self.period_end],
+                therapist=therapist,
+                is_done=True,
+                activity=observation
+            )
+            if schedule_ob:
+                therapist.session_ob = schedule_ob.count()
+            else:
+                therapist.session_ob = 0
+
+            schedule_th = Schedules.objects.filter(
+                date__range=[self.period_start, self.period_end],
+                therapist=therapist,
+                is_done=True
+            ).exclude(
+                activity=observation
+            )
+            if schedule_th:
+                therapist.session_not_ob_done = schedule_th.count()
+            else:
+                therapist.session_not_ob_done = 0
+
+            schedule_th_undone = Schedules.objects.filter(
+                date__range=[self.period_start, self.period_end],
+                therapist=therapist,
+                is_done=False
+            ).exclude(
+                activity=observation
+            )
+            if schedule_th_undone:
+                therapist.session_not_ob_undone = schedule_th_undone.count()
+            else:
+                therapist.session_not_ob_undone = 0
+
+            self.therapists_summary.append(therapist)
+
+    def get_context_data(self, parent_context):
+        context = super().get_context_data(parent_context)
+        panel_title = 'Summary Therapist'
+
+        context['panel_title'] = panel_title
+        context['therapists'] = self.therapists_summary
+        context['period_start'] = self.period_start
+        context['period_end'] = self.period_end
 
         return context
 

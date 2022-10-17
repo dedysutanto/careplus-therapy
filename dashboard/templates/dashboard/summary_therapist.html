@@ -1,0 +1,24 @@
+{% load i18n wagtailadmin_tags %}
+    <section class="panel summary nice-padding" style="margin-top: 50px;">
+        <h1 style="text-align: center">Summary Therapist {{ today|date:"l, d M Y" }}</h1>
+
+        {% if therapists %}
+            <table style="width: 90%; border-collapse: collapse;">
+                <tr style="border-bottom: 1pt solid black;">
+                    <td><h2>Therapist</h2></td>
+                    <td style="text-align: center;"><h2>Observasi</h2></td>
+                    <td style="text-align: center;"><h2>Sesi Selesai</h2></td>
+                    <td style="text-align: center;"><h2>Sesi Belum Selesai</h2></td>
+                </tr>
+            {% for therapist in therapists %}
+                <tr>
+                    <td><h2>{{ therapist.name }}</h2></td>
+                    <td style="text-align: center;"><h2>{{ therapist.session_ob }}</h2></td>
+                    <td style="text-align: center;"><h2>{{ therapist.session_not_ob_done }}</h2></td>
+                    <td style="text-align: center;"><h2>{{ therapist.session_not_ob_undone }}</h2></td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+
+    </section>
