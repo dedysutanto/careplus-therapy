@@ -1,15 +1,15 @@
-from wagtail.admin.ui.components import Component
-from student.models import Students
-from therapist.models import Therapists
-from schedule.models import Schedules
-from invoice.models import InvoiceItems, Invoices
-from data_support.models import Activities
-from crum import get_current_user
 from random import randint
-from django.utils.translation import gettext as _
+# from django.utils.translation import gettext as _
+from django.core.exceptions import ObjectDoesNotExist
+from wagtail.admin.ui.components import Component
+from crum import get_current_user
 from django.utils.timezone import now, timedelta
 from schedule.wagtail_hooks import SchedulesAdmin
-from django.core.exceptions import ObjectDoesNotExist
+from therapist.models import Therapists
+from schedule.models import Schedules
+from student.models import Students
+from invoice.models import Invoices
+from data_support.models import Activities
 
 
 def get_current_period():
@@ -134,8 +134,12 @@ class SummaryTherapist(Component):
         elif user.clinic:
             self.therapists = Therapists.objects.filter(clinic=user.clinic)
 
-        observation = Activities.objects.get(name__icontains='obser')
-        print(observation)
+        try:
+            observation = Activities.objects.get(name__icontains='obser')
+            print(observation)
+        except ObjectDoesNotExist:
+            observation = None
+            
         self.therapists_summary = []
         for therapist in self.therapists:
             print(therapist)

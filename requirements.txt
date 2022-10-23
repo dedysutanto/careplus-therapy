@@ -35,7 +35,7 @@ telepath==0.3
 toml==0.10.2
 Unipath==1.1
 urllib3==1.26.12
-wagtail==4.0.2
+wagtail==4.0.4
 webencodings==0.5.1
 whitenoise==5.3.0
 Willow==1.4.1
