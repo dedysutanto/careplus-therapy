@@ -45,7 +45,8 @@ OCCUPATION = [
 
 class Students(ClusterableModel):
     name = models.CharField(_('Nama Lengkap'), max_length=100)
-    call_name = models.CharField(_('Nama Panggilan'), max_length=50, blank=True, null=True)
+    # call_name = models.CharField(_('Nama Panggilan'), max_length=50, blank=True, null=True)
+    call_name = models.CharField(_('Nama Panggilan'), max_length=50)
     gender = models.CharField(max_length=3, verbose_name=_('Jenis Kelamin'), choices=GENDER, default='M')
     dob = models.DateField(verbose_name=_('Tanggal Lahir'))
     pob = models.CharField(_('Tempat Lahir'), max_length=50, blank=True, null=True)
