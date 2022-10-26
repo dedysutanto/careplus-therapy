@@ -118,7 +118,8 @@ class Students(ClusterableModel):
         verbose_name_plural = 'siswa'
 
     def __str__(self):
-        return '%s' % self.name
+        # return '%s' % self.name
+        return '{}'.format(self.call_name)
 
     def calculate_age(self):
         return '%d' % calculate_age(self.dob)
