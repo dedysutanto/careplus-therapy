@@ -1,20 +1,18 @@
 from django.db import models
+from django.utils.timezone import now
+from django.db.models import Sum
+from django.core.exceptions import ValidationError
+from crum import get_current_user
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
 from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.models import Orderable
 from modelcluster.fields import ParentalKey
-from config.utils import calculate_age
-from wagtail.admin.panels import FieldPanel, InlinePanel, \
-    FieldRowPanel, MultiFieldPanel, HelpPanel, TabbedInterface
+from wagtail.admin.panels import FieldPanel, InlinePanel, FieldRowPanel
 from account.models import User, Clinic
-from crum import get_current_user
 from student.models import Students
 from data_support.models import InvoiceItems
-from django.utils.timezone import now
-from django.db.models import Sum
-from django.core.exceptions import ValidationError
 
 
 class InvoicesForm(WagtailAdminPageForm):
@@ -113,14 +111,14 @@ class Invoices(ClusterableModel):
 
     def calculate_total(self):
         total_text = 0
-        total = InvoiceItems.objects.filter(invoice=self).aggregate(Sum('sub_total'))
+        total = InvoiceForItems.objects.filter(invoice=self).aggregate(Sum('sub_total'))
         if total['sub_total__sum']:
             total_text = total['sub_total__sum']
         return 'Rp. {:,}'.format(total_text).replace(',', '.')
     calculate_total.short_description = 'Total'
 
 
-class InvoiceItems(Orderable):
+class InvoiceForItems(Orderable):
     item = models.ForeignKey(
         InvoiceItems,
         on_delete=models.CASCADE,
@@ -147,4 +145,4 @@ class InvoiceItems(Orderable):
     def save(self):
         self.price = self.item.price
         self.sub_total = self.quantity * self.price
-        return super(InvoiceItems, self).save()
+        return super(InvoiceForItems, self).save()

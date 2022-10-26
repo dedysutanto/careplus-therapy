@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from invoice.models import Invoices, InvoiceItems
+from invoice.models import Invoices, InvoiceForItems
 from django.db.models import Sum
 from django.core.mail import EmailMessage
 from django.template.loader import get_template

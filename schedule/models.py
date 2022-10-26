@@ -1,14 +1,17 @@
+from datetime import time
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import gettext_lazy as _
+from crum import get_current_user
+from wagtail.admin.panels import FieldPanel, \
+    FieldRowPanel, MultiFieldPanel
+from django.core.exceptions import ValidationError
 from django.db import models
 from therapist.models import Therapists
 from student.models import Students
 from account.models import User, Clinic
 from data_support.models import Activities
-from django.utils.translation import gettext_lazy as _
-from crum import get_current_user
-from datetime import timedelta, time
-from wagtail.admin.panels import FieldPanel, InlinePanel, \
-    FieldRowPanel, MultiFieldPanel, HelpPanel, TabbedInterface
-from django.core.exceptions import ValidationError
+        
+
 
 SESSION = [
     (1, '1'),
@@ -91,6 +94,20 @@ class Schedules(models.Model):
             current_user = get_current_user()
             self.user = current_user
             self.clinic = current_user.clinic
+            
+        '''
+        This is to ensure that Session is updated
+        '''
+        
+        
+        try:
+            self.student
+            if self.student:
+                from student import utils
+                utils.update_student_session(None, self, None)
+        
+        except ObjectDoesNotExist:
+            raise ValidationError('Siswa: Kolom ini harus diisi.')
 
         '''
         Check Time Schedule against operational
@@ -108,6 +125,7 @@ class Schedules(models.Model):
         '''
         Check if Student still have session
         '''
+        self.student = Students.objects.get(id=self.student.id)
         if self.id:
             if (self.student.session + self.session) < self.session and self.id is None:
                 raise ValidationError(
@@ -124,6 +142,8 @@ class Schedules(models.Model):
         Check if the therapist schedules are conflict
         '''
         therapist_schedules = Schedules.objects.filter(therapist=self.therapist, is_done=False)
+
+        end = time(hour=self.start.hour + self.session, minute=self.start.minute)
 
         is_conflicted = False
         if therapist_schedules:
@@ -167,8 +187,8 @@ class Schedules(models.Model):
             self.clinic = current_user.clinic
 
         #self.end = self.start.hour + timedelta(hours=self.session)
-        print(self.start.hour)
-        print(self.session)
+        # print(self.start.hour)
+        # print(self.session)
         #self.end = self.start
         self.end = time(hour=self.start.hour + self.session, minute=self.start.minute)
 
