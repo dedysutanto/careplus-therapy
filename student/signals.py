@@ -1,9 +1,9 @@
-from invoice.models import Invoices, InvoiceItems
-from schedule.models import Schedules
-from django.db.models.signals import post_save, post_delete, pre_delete
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from .utils import update_student_session
 from django.db import transaction
+from invoice.models import Invoices
+from schedule.models import Schedules
+from .utils import update_student_session
 
 
 @receiver(post_save, sender=Invoices)

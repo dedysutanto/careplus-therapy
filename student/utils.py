@@ -1,8 +1,8 @@
+from django.db.models import Sum
+from django.core.exceptions import ObjectDoesNotExist
 from invoice.models import Invoices, InvoiceItems
 from schedule.models import Schedules
 from student.models import Students
-from django.db.models import Sum
-from django.core.exceptions import ObjectDoesNotExist
 
 
 def update_student_session(sender, instance, created):
@@ -14,7 +14,7 @@ def update_student_session(sender, instance, created):
         sub_invoice_session = 0
         for invoice_item in invoice_items:
             print(invoice_item.item.session)
-            sub_invoice_session += invoice_item.item.session
+            sub_invoice_session += invoice_item.item.session * invoice_item.quantity
         print('sub_invoice_session', sub_invoice_session)
         total_invoice_session += sub_invoice_session
         print('total_invoice_session', total_invoice_session)
