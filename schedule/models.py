@@ -94,8 +94,8 @@ class Schedules(models.Model):
 
         '''
         Check Time Schedule against operational
-        :return:
-        '''
+        DISABLE
+        
         if self.start < self.user.clinic.start or self.start > self.user.clinic.end:
             raise ValidationError('Jam mulai terapi diluar jam operational klinik')
 
@@ -103,7 +103,8 @@ class Schedules(models.Model):
 
         if end < self.user.clinic.start or end > self.user.clinic.end:
             raise ValidationError('Jam selesai terapi diluar jam operational klinik')
-
+        '''
+        
         '''
         Check if Student still have session
         '''

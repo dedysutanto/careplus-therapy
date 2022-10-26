@@ -8,9 +8,14 @@ from .utils import update_student_session
 
 @receiver(post_save, sender=Invoices)
 def update_student_session_from_invoice(sender, instance, created, **kwargs):
-    transaction.on_commit(lambda: update_student_session(sender, instance, created))
-    #update_student_session(sender, instance, created)
-    print('Update Student Session from Invoice')
+    if created:
+        transaction.on_commit(lambda: update_student_session(sender, instance, created))
+        #update_student_session(sender, instance, created)
+        print('Update Student Session from Invoice Created')
+    else:
+        transaction.on_commit(lambda: update_student_session(sender, instance, created))
+        #update_student_session(sender, instance, created)
+        print('Update Student Session from Invoice Updated')
 
 
 @receiver(post_save, sender=Schedules)
