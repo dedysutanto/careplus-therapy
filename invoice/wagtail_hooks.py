@@ -73,8 +73,8 @@ class InvoicesButton(ButtonHelper):
 
 
 class InvoicesEditView(EditView):
-    def get_success_url(self):
-        return self.edit_url
+    # def get_success_url(self):
+    #    return self.edit_url
 
     def get_page_title(self):
         return self.instance.number
