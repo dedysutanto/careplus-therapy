@@ -1,3 +1,4 @@
+import os
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.conf.urls.static import static
@@ -6,8 +7,8 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from django.views.generic.base import RedirectView
-import os
-from invoice.views import print_invoice, html_invoice
+from invoice.views import print_invoice
+
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/login/')),

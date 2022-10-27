@@ -21,3 +21,5 @@ def add_another_welcome_panel(request, panels):
     panels.append(SummaryPanel())
     panels.append(SummaryTherapist())
     panels.append(ScheduleTodayPanel())
+    
+    print('REQUEST', request.GET)

@@ -1,4 +1,4 @@
-from random import randint
+# from random import randint
 # from django.utils.translation import gettext as _
 from django.core.exceptions import ObjectDoesNotExist
 from wagtail.admin.ui.components import Component
@@ -14,11 +14,25 @@ from data_support.models import Activities
 
 def get_current_period():
     today = now()
-    prev_month = today.replace(day=1) - timedelta(days=1)
+    print('Date', today.day)
+    if today.day > 25:
+        prev_month = today
+        next_month = today.replace(day=1) + timedelta(days=32)   
+    else:
+        prev_month = today.replace(day=1) - timedelta(days=1)
+        next_month = today
     period_start = prev_month.replace(day=26, hour=0)
-    period_end = today.replace(day=25, hour=0)
+    period_end = next_month.replace(day=25, hour=0)
 
     return period_start, period_end
+
+
+class ListPeriodePanel(Component):
+    order = 40
+    template_name = "dashboard/list_periode.html"
+    
+    def __init__(self):
+        pass
 
 
 class SummaryPanel(Component):
@@ -26,13 +40,7 @@ class SummaryPanel(Component):
     template_name = "dashboard/site_summary.html"
 
     def __init__(self):
-        # today = now()
-        # prev_month = today.replace(day=1) - timedelta(days=1)
-        # self.period_start = prev_month.replace(day=26, hour=0)
-        # self.period_end = today.replace(day=25, hour=0)
         self.period_start, self.period_end = get_current_period()
-        # print(self.period_start)
-        # print(self.period_end)
 
         user = get_current_user()
         if user.is_superuser:
@@ -192,6 +200,7 @@ class SummaryTherapist(Component):
         return context
 
 
+'''
 class MemberChartsPanel(Component):
     order = 70
     template_name = 'dashboard/members_charts.html'
@@ -218,7 +227,7 @@ class MemberChartsPanel(Component):
                 version = str(peers['version'])
                 latency = peers['latency']
                 try:
-                    self.member_version['v' + version]
+                    # self.member_version['v' + version]
                     self.member_version['v' + version] += 1
                 except KeyError:
                     self.member_version['v' + version] = 1
@@ -276,3 +285,4 @@ class MemberChartsPanel(Component):
         context['is_data_version'] = is_data_version
 
         return context
+'''
