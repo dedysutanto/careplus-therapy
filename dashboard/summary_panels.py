@@ -39,7 +39,12 @@ class SummaryPanel(Component):
     order = 50
     template_name = "dashboard/site_summary.html"
 
-    def __init__(self):
+    def __init__(self, request):
+        self.request = request
+        # print('REQUEST', request.GET)
+        # if 'q' in request.GET:
+        #    q_periode = request.GET['q']
+        #    print('PEIODE', q_periode)
         self.period_start, self.period_end = get_current_period()
 
         user = get_current_user()
