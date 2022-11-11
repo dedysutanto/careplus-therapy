@@ -116,6 +116,7 @@ class Students(ClusterableModel):
         db_table = 'students'
         verbose_name = 'siswa'
         verbose_name_plural = 'siswa'
+        ordering = ['call_name']
 
     def __str__(self):
         # return '%s' % self.name
