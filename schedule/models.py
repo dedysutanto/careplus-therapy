@@ -10,7 +10,6 @@ from therapist.models import Therapists
 from student.models import Students
 from account.models import User, Clinic
 from data_support.models import Activities
-        
 
 
 SESSION = [
@@ -94,25 +93,24 @@ class Schedules(models.Model):
             current_user = get_current_user()
             self.user = current_user
             self.clinic = current_user.clinic
-            
+
         '''
         This is to ensure that Session is updated
         '''
-        
-        
+
         try:
             self.student
             if self.student:
                 from student import utils
                 utils.update_student_session(None, self, None)
-        
+
         except ObjectDoesNotExist:
             raise ValidationError('Siswa: Kolom ini harus diisi.')
 
         '''
         Check Time Schedule against operational
         DISABLE
-        
+
         if self.start < self.user.clinic.start or self.start > self.user.clinic.end:
             raise ValidationError('Jam mulai terapi diluar jam operational klinik')
 
@@ -121,7 +119,7 @@ class Schedules(models.Model):
         if end < self.user.clinic.start or end > self.user.clinic.end:
             raise ValidationError('Jam selesai terapi diluar jam operational klinik')
         '''
-        
+
         '''
         Check if Student still have session
         '''
@@ -163,6 +161,7 @@ class Schedules(models.Model):
         '''
         Check if the Student schedules are conflict
         '''
+        '''
         student_schedules = Schedules.objects.filter(student=self.student, is_done=False)
 
         is_conflicted = False
@@ -179,6 +178,7 @@ class Schedules(models.Model):
 
             if is_conflicted:
                 raise ValidationError('Jadwal siswa {} konflik!'.format(self.student))
+        '''
 
     def save(self):
         if self.user is None:
