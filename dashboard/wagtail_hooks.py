@@ -21,13 +21,13 @@ def add_another_welcome_panel(request, panels):
     panels.append(SummaryPanel(request))
     panels.append(SummaryTherapist())
     panels.append(ScheduleTodayPanel())
-    
 
-@hooks.register('construct_reports_menu', order=1)
-def hide_reports_menu_item(request, menu_items):
-    menu_items[:] = [item for item in menu_items if item.name != 'workflows']
-    menu_items[:] = [item for item in menu_items if item.name != 'workflow-tasks']
-    menu_items[:] = [item for item in menu_items if item.name != 'aging-pages']
-    menu_items[:] = [item for item in menu_items if item.name != 'locked-pages']
 
-   
+@hooks.register('construct_main_menu', order=2)
+def hide_help_menu_item(request, menu_items):
+    menu_items[:] = [item for item in menu_items if item.name != 'help']
+    #menu_items[:] = [item for item in menu_items if item.name != 'workflow-tasks']
+    #menu_items[:] = [item for item in menu_items if item.name != 'aging-pages']
+    #menu_items[:] = [item for item in menu_items if item.name != 'locked-pages']
+
+

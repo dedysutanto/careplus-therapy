@@ -192,6 +192,8 @@ WAGTAIL_USER_EDIT_FORM = 'account.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'account.forms.CustomUserCreationForm'
 WAGTAIL_USER_CUSTOM_FIELDS = ['clinic']
 
+# WAGTAIL 4.1.1
+WAGTAIL_ENABLE_WHATS_NEW_BANNER = False
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
