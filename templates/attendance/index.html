@@ -27,6 +27,9 @@
                                 elem.focus();
                             } else {
                                 $("#section_detail_usulan").css('display', 'block');
+                                $("#schedules_detail").empty();
+                                $("#schedules_detail").append('<h1>Jadwal Terapi Hari Ini</h1>');
+                                $("#schedules_detail").append('<hr />');
                                 let schedules = data['schedules'];
                                 //console.log(schedules);
                                 if (schedules) {
