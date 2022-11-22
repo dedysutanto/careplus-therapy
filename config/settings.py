@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'therapist',
     'schedule',
     'invoice',
+    'attendance',
     'data_support',
     'wagtail.contrib.modeladmin',
     'wagtail.contrib.forms',
