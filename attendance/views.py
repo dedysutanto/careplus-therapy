@@ -1,6 +1,6 @@
 import json
 import datetime
-from django.core.exception import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.http import HttpResponse
 from student.models import Students
