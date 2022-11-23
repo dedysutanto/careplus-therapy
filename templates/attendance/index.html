@@ -50,6 +50,7 @@
                                 let student = data['student'];
                                 let schedules = data['schedules'];
                                 let schedules_next = data['schedules_next'];
+                                $("#student_detail_session").empty();
                                 $("#student_detail_session").append('<h1>Paket tersisa ' + student.session + ' sesi saja</h1>');
                                 //console.log(schedules);
                                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
