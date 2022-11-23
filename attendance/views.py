@@ -44,18 +44,24 @@ def get_student_detail(request):
                 date=today,
                 is_done=False,
             )
+            schedules_next = Schedules.objects.filter(
+                student=student,
+                date__gt=today,
+                is_done=False,
+            ).order_by('date')
         except ObjectDoesNotExist:
             student = None
         place_json = {}
         if student:
             place_json['status'] = True
-            schedules_array = []
 
+            schedules_array = []
             if schedules:
                 for schedule in schedules:
                     schedule_list = {}
                     therapist = Therapists.objects.get(id=schedule.therapist.id)
                     activity = Activities.objects.get(id=schedule.activity.id)
+                    schedule_list['id'] = schedule.id
                     schedule_list['date'] = schedule.date
                     schedule_list['start'] = schedule.start
                     schedule_list['end'] = schedule.end
@@ -63,13 +69,27 @@ def get_student_detail(request):
                     schedule_list['activity'] = activity.name
                     schedules_array.append(schedule_list)
 
-                #place_json['schedules'] = list(schedules_array.values())
                 place_json['schedules'] = schedules_array
-                #therapist = Therapists.objects.get(id=schedule.therapist.id)
-                #place_json['therapist'] = list(therapist.values())
             else:
                 place_json['schedules'] = None
 
+            schedules_array = []
+            if schedules_next:
+                for schedule in schedules_next:
+                    schedule_list = {}
+                    therapist = Therapists.objects.get(id=schedule.therapist.id)
+                    activity = Activities.objects.get(id=schedule.activity.id)
+                    schedule_list['id'] = schedule.id
+                    schedule_list['date'] = schedule.date
+                    schedule_list['start'] = schedule.start
+                    schedule_list['end'] = schedule.end
+                    schedule_list['therapist'] = therapist.name
+                    schedule_list['activity'] = activity.name
+                    schedules_array.append(schedule_list)
+
+                place_json['schedules_next'] = schedules_array
+            else:
+                place_json['schedules_next'] = None
         else:
             place_json['status'] = False
             #place_json['nia'] = anggota.nia

@@ -26,25 +26,46 @@
                                 elem.val('');
                                 elem.focus();
                             } else {
-                                $("#section_detail_usulan").css('display', 'block');
+                                console.log(data);
+                                $("#section_detail_student").css('display', 'block');
                                 $("#schedules_detail").empty();
                                 $("#schedules_detail").append('<h1>Jadwal Terapi Hari Ini</h1>');
                                 $("#schedules_detail").append('<hr />');
+                                $("#schedules_detail_next").empty();
+                                $("#schedules_detail_next").append('<h1>Jadwal Terapi Berikutnya</h1>');
+                                $("#schedules_detail_next").append('<hr />');
                                 let schedules = data['schedules'];
+                                let schedules_next = data['schedules_next'];
                                 //console.log(schedules);
+                                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                                 if (schedules) {
-                                for(let i=0; i<schedules.length; i++) {
-                                    $("#schedules_detail").append('<h4>Tanggal: ' + schedules[i].date + '</h4>');
-                                    $("#schedules_detail").append('<h4>Jam: ' + schedules[i].start + ' - ' + schedules[i].end + '</h4>');
-                                    $("#schedules_detail").append('<h4>Therapist: ' + schedules[i].therapist + '</h4>');
-                                    $("#schedules_detail").append('<h4>Activity: ' + schedules[i].activity + '</h4>');
-                                    $("#schedules_detail").append('<br />');
-                                }
+                                    for(let i=0; i<schedules.length; i++) {
+                                        var the_date = new Date(schedules[i].date).toLocaleDateString('id-ID', options);
+                                        $("#schedules_detail").append('<h4>Tanggal: ' + the_date + '</h4>');
+                                        $("#schedules_detail").append('<h4>Jam: ' + schedules[i].start + ' - ' + schedules[i].end + '</h4>');
+                                        $("#schedules_detail").append('<h4>Therapist: ' + schedules[i].therapist + '</h4>');
+                                        $("#schedules_detail").append('<h4>Activity: ' + schedules[i].activity + '</h4>');
+                                        $("#schedules_detail").append('<button id="schedule_' + schedules[i].id + '" class="btn btn-lg btn-primary" type="button">Mulai Sesi Terapi</button>');
+                                        $("#schedules_detail").append('<br />');
+                                    }
                                 } else {
                                     $("#schedules_detail").append('<h4>Tidak ada jadwal terapi.</h4>');
                                     $("#schedules_detail").append('<br />');
 
                                 }       
+                                if (schedules_next) {
+                                    for(let i=0; i<schedules_next.length; i++) {
+                                        var the_date = new Date(schedules_next[i].date).toLocaleDateString('id-ID', options);
+                                        $("#schedules_detail_next").append('<h4>Tanggal: ' + the_date + '</h4>');
+                                        $("#schedules_detail_next").append('<h4>Jam: ' + schedules_next[i].start + ' - ' + schedules_next[i].end + '</h4>');
+                                        $("#schedules_detail_next").append('<h4>Therapist: ' + schedules_next[i].therapist + '</h4>');
+                                        $("#schedules_detail_next").append('<h4>Activity: ' + schedules_next[i].activity + '</h4>');
+                                        $("#schedules_detail_next").append('<br />');
+                                    }
+                                } else {
+                                    $("#schedules_detail_next").append('<h4>Tidak ada jadwal terapi.</h4>');
+                                    $("#schedules_detail_next").append('<br />'); 
+                                } 
                             } 
                         }
                 });
@@ -62,7 +83,7 @@
 
         $("#submit_button").css('visibility', 'hidden');
         
-        $("#section_detail_usulan").css('display', 'none');
+        $("#section_detail_student").css('display', 'none');
 
         
         $("#student_name").blur(function () {
@@ -163,10 +184,16 @@ function validateEmail(elem) {
         </div>
     </div>
 
-    <div id="section_detail_usulan">
+    <div id="section_detail_student">
         <div class="card mb-3">
             <div id="schedules_detail" class="card-body">
                 <h1>Jadwal Terapi Hari Ini</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div id="schedules_detail_next" class="card-body">
+                <h1>Jadwal Terapi Berikutnya</h1>
                 <hr />
             </div>
         </div>
