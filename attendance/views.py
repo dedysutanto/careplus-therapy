@@ -18,12 +18,12 @@ def construct_name(obj):
 def get_student(request):
     if is_ajax(request=request):
         query = request.GET.get("term", "")
-        print(query)
+        #print(query)
         students = Students.objects.filter(
             name__icontains=query,
             call_name__icontains=query,
             session_scheduled__gt=0
-        )
+        ).order_by('id')
         results = []
         place_json = {}
         for student in students:
