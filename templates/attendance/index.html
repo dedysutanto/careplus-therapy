@@ -51,7 +51,7 @@
                                 let schedules = data['schedules'];
                                 let schedules_next = data['schedules_next'];
                                 $("#student_detail_session").empty();
-                                $("#student_detail_session").append('<h1>Paket tersisa ' + student.session + ' sesi saja</h1>');
+                                $("#student_detail_session").append('<h1>Paket tersisa ' + student.session + ' sesi</h1>');
                                 //console.log(schedules);
                                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                                 if (schedules) {
@@ -61,7 +61,7 @@
                                         $("#schedules_detail").append('<h4>Jam: ' + schedules[i].start + ' - ' + schedules[i].end + '</h4>');
                                         $("#schedules_detail").append('<h4>Therapist: ' + schedules[i].therapist + '</h4>');
                                         $("#schedules_detail").append('<h4>Activity: ' + schedules[i].activity + '</h4>');
-                                        $("#schedules_detail").append('<button id="schedule_' + schedules[i].id + '" class="btn btn-lg btn-primary" type="submit" onclick="clickButtonHadir(' + schedules[i].id + ',' + schedules[i].student_id + ',' + schedules[i].student_p + ');">Mulai Sesi Terapi</button>');
+                                        $("#schedules_detail").append('<button id="schedule_' + schedules[i].id + '" class="btn btn-lg btn-primary" type="submit" onclick="clickButtonHadir(' + schedules[i].id + ',' + student.id + ',' + student.pin + ');">Mulai Sesi Terapi</button>');
                                         $("#schedules_detail").append('<br />');
                                     }
                                 } else {
