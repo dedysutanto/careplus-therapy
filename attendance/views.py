@@ -22,6 +22,7 @@ def get_student(request):
         students = Students.objects.filter(
             name__icontains=query,
             call_name__icontains=query,
+            session_scheduled__gt=0
         )
         results = []
         place_json = {}
@@ -39,8 +40,7 @@ def get_student_detail(request):
         print(query)
         try:
             student = Students.objects.get(
-                id=query,
-                session_scheduled__gt=0
+                id=query
             )
             today = datetime.date.today()
             schedules = Schedules.objects.filter(
