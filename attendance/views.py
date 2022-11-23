@@ -37,7 +37,10 @@ def get_student_detail(request):
         query = request.GET.get("term", "")
         print(query)
         try:
-            student = Students.objects.get(id=query)
+            student = Students.objects.get(
+                id=query,
+                session_scheduled__gt=0
+            )
             today = datetime.date.today()
             schedules = Schedules.objects.filter(
                 student=student,
