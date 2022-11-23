@@ -15,6 +15,19 @@ def is_ajax(request):
 def construct_name(obj):
     return '{}. {} ({})'.format(obj.id, obj.name, obj.call_name)
 
+'''
+def get_pin(request):
+    if is_ajax(request=request):
+        query = request.GET.get("term", "")
+        #print(query)
+        student = Students.objects.get(
+            id=query,
+        )
+        data = { 'pin': student.pin }
+    mimetype = "application/json"
+    return HttpResponse(data, mimetype)
+'''
+
 def get_student(request):
     if is_ajax(request=request):
         query = request.GET.get("term", "")
@@ -59,12 +72,21 @@ def get_student_detail(request):
         if student:
             place_json['status'] = True
 
+            student_json = {
+                'id': student.id,
+                'pin': student.pin,
+                'session': student.session
+            }
+
+            place_json['student'] = student_json
             schedules_array = []
             if schedules:
                 for schedule in schedules:
                     schedule_list = {}
                     therapist = Therapists.objects.get(id=schedule.therapist.id)
                     activity = Activities.objects.get(id=schedule.activity.id)
+                    schedule_list['student_id'] = student.id
+                    schedule_list['student_p'] = student.pin
                     schedule_list['id'] = schedule.id
                     schedule_list['date'] = schedule.date
                     schedule_list['start'] = schedule.start
@@ -96,9 +118,6 @@ def get_student_detail(request):
                 place_json['schedules_next'] = None
         else:
             place_json['status'] = False
-            #place_json['nia'] = anggota.nia
-            #place_json['nama'] = anggota.nama
-            #place_json['wilayah'] = anggota.wilayah.pk
 
         data = json.dumps(place_json, indent=4, sort_keys=True, default=str)
 
@@ -111,7 +130,20 @@ def index(request):
 def scanner(request):
     return render(request, 'attendance/scanner.html')
 
-
 def qr_scan(request):
     pass
+
+def pin_input(request):
+    context = {}
+    if request.POST:
+        schedule_id = request.POST.get('schedule_id', None)
+        student_id = request.POST.get('student_id', None)
+        student_pin = request.POST.get('student_p', None)
+        context = {
+        'schedule_id': schedule_id,
+        'student_p': student_pin,
+        'student_id': student_id
+        }
+
+    return render(request, 'attendance/pin.html', context)
 

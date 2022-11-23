@@ -13,6 +13,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script> 
+        function clickButtonHadir(schedule_id, student_id, student_p) {
+            alert('Element ID ' + schedule_id + ' ' + student_id + ' ' + student_p);
+            var url = '{% url "attendance_pin" %}';
+            var form = $('<form action="' + url + '" method="post">' +
+                '{% csrf_token %}' +
+                '<input type="hidden" name="student_p" value="' + student_p + '" />' +
+                '<input type="hidden" name="schedule_id" value="' + schedule_id + '" />' +
+                '<input type="hidden" name="student_id" value="' + student_id + '" />' +
+                '</form>');
+             $('body').append(form);
+             form.submit();
+        }
         function validateAnggota(elem) {
             let text_split = elem.val().split(".");
             if (text_split.length > 1) {
@@ -34,8 +46,11 @@
                                 $("#schedules_detail_next").empty();
                                 $("#schedules_detail_next").append('<h1>Jadwal Terapi Berikutnya</h1>');
                                 $("#schedules_detail_next").append('<hr />');
+
+                                let student = data['student'];
                                 let schedules = data['schedules'];
                                 let schedules_next = data['schedules_next'];
+                                $("#student_detail_session").append('<h1>Paket tersisa ' + student.session + ' sesi saja</h1>');
                                 //console.log(schedules);
                                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                                 if (schedules) {
@@ -45,7 +60,7 @@
                                         $("#schedules_detail").append('<h4>Jam: ' + schedules[i].start + ' - ' + schedules[i].end + '</h4>');
                                         $("#schedules_detail").append('<h4>Therapist: ' + schedules[i].therapist + '</h4>');
                                         $("#schedules_detail").append('<h4>Activity: ' + schedules[i].activity + '</h4>');
-                                        $("#schedules_detail").append('<button id="schedule_' + schedules[i].id + '" class="btn btn-lg btn-primary" type="button">Mulai Sesi Terapi</button>');
+                                        $("#schedules_detail").append('<button id="schedule_' + schedules[i].id + '" class="btn btn-lg btn-primary" type="submit" onclick="clickButtonHadir(' + schedules[i].id + ',' + schedules[i].student_id + ',' + schedules[i].student_p + ');">Mulai Sesi Terapi</button>');
                                         $("#schedules_detail").append('<br />');
                                     }
                                 } else {
@@ -152,8 +167,10 @@ function validateEmail(elem) {
         </div>
     </div>
 <!-- Form Start -->
-<form action="{% url 'attendance_scanner' %}" method="POST">
+<!--
+<form id="student_schedule_form" action="{% url 'attendance_pin' %}" method="POST">
     {% csrf_token %}
+-->
     <div class="card mb-3 mt-5">
         <div class="card-body">
             <!--
@@ -170,9 +187,6 @@ function validateEmail(elem) {
                 <input id="student_name" name="student_name" type="text" class="form-control autocomplete-content" required="true">
             </div>
             <button type="button" class="btn btn-lg btn-primary">Check Jadwal Terapi</button>
-            <div id="student_detail">
-
-            </div>
     
             <!--
             <label for="pengusul_mobile" class="form-label">Nomer HP Jemaat Pengusul</label>
@@ -185,6 +199,10 @@ function validateEmail(elem) {
     </div>
 
     <div id="section_detail_student">
+        <div class="card mb-3">
+            <div id="student_detail_session" class="card-body">
+            </div>
+        </div>
         <div class="card mb-3">
             <div id="schedules_detail" class="card-body">
                 <h1>Jadwal Terapi Hari Ini</h1>
@@ -203,7 +221,9 @@ function validateEmail(elem) {
             <button type="submit" class="btn btn-lg btn-primary">Kirim Usulan</button>
         </div>
     </div>
+    <!--
 </form>
+    -->
 </div>
 
 </body>
