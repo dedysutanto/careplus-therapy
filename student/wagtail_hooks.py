@@ -52,6 +52,7 @@ class StudentsAdmin(ModelAdmin):
     search_fields = ('name', 'dob', )
     edit_view_class = StudentsEditView
     permission_helper_class = StudentPermissionHelper
+    inspect_view_enabled = True
 
     def get_queryset(self, request):
         #current_user = get_user()
