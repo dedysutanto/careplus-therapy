@@ -41,7 +41,7 @@
                                 if (schedules) {
                                     for(let i=0; i<schedules.length; i++) {
                                         var the_date = new Date(schedules[i].date).toLocaleDateString('id-ID', options);
-                                        $("#schedules_detail").append('<h4>Tanggal: ' + the_date + '</h4>');
+                                        $("#schedules_detail").append('<h2>' + the_date + '</h2>');
                                         $("#schedules_detail").append('<h4>Jam: ' + schedules[i].start + ' - ' + schedules[i].end + '</h4>');
                                         $("#schedules_detail").append('<h4>Therapist: ' + schedules[i].therapist + '</h4>');
                                         $("#schedules_detail").append('<h4>Activity: ' + schedules[i].activity + '</h4>');
@@ -56,7 +56,7 @@
                                 if (schedules_next) {
                                     for(let i=0; i<schedules_next.length; i++) {
                                         var the_date = new Date(schedules_next[i].date).toLocaleDateString('id-ID', options);
-                                        $("#schedules_detail_next").append('<h4>Tanggal: ' + the_date + '</h4>');
+                                        $("#schedules_detail_next").append('<h2>' + the_date + '</h2>');
                                         $("#schedules_detail_next").append('<h4>Jam: ' + schedules_next[i].start + ' - ' + schedules_next[i].end + '</h4>');
                                         $("#schedules_detail_next").append('<h4>Therapist: ' + schedules_next[i].therapist + '</h4>');
                                         $("#schedules_detail_next").append('<h4>Activity: ' + schedules_next[i].activity + '</h4>');
@@ -130,7 +130,7 @@ function validateEmail(elem) {
 
     </script>  
 </head>
-<body style="background-image: url('{% static 'attendance/img/cloud.png' %}'); background-size: 100% 100%; background-attachment: fixed; ">
+<body style="background-image: url('{% static 'attendance/img/cloud.png' %}'); background-size: 100% 100%; background-attachment: fixed; background-position: center center;">
 
 <div class="container">
     <div class="card mb-5 mt-5">
