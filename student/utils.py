@@ -53,4 +53,4 @@ def update_student_session(sender, instance, created):
 
         except ObjectDoesNotExist:
             print('Update Student Session is Object Not Exist')
- 
+

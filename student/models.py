@@ -43,6 +43,10 @@ OCCUPATION = [
 ]
 
 
+def random_pin():
+    import random
+    return ''.join(str(random.randint(0,9)) for _ in range(4))
+
 class Students(ClusterableModel):
     name = models.CharField(_('Nama Lengkap'), max_length=100)
     # call_name = models.CharField(_('Nama Panggilan'), max_length=50, blank=True, null=True)
@@ -86,6 +90,8 @@ class Students(ClusterableModel):
         verbose_name=_('Klinik'),
         null=True
     )
+    pin = models.CharField('PIN', max_length=4, default=random_pin())
+    pin_lock = models.BooleanField('PIN Lock', default=False)
 
     panels = [
         MultiFieldPanel([
@@ -97,6 +103,8 @@ class Students(ClusterableModel):
             FieldPanel('school_name'),
             FieldPanel('additional_info'),
         ], heading='Data Siswa', classname=''),
+
+        FieldPanel('pin'),
 
         TabbedInterface([
             InlinePanel('related_father', heading="Ayah", label="Data Ayah",
