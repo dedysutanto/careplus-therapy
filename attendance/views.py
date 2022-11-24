@@ -36,7 +36,7 @@ def get_student(request):
             name__icontains=query,
             call_name__icontains=query,
         ).exclude(
-            session_scheduledt=0
+            session_scheduled=0
         ).order_by('id')
         results = []
         place_json = {}
