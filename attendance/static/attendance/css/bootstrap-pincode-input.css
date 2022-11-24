@@ -35,8 +35,8 @@
 }
 
 .pincode-input-container.touch .pincode-input-text:focus, .pincode-input-container.touch .form-control.pincode-input-text:focus {
-	outline: none;
-	border: 0;
+	outline: 1px solid black;
+	border: 1px solid black;
 	box-shadow: none;
 }
 
