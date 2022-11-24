@@ -46,7 +46,9 @@
             	    // check the code
             	    if(value!=student_p){
                         pin_input += 1;
-            		    $(errorElement).html("PIN is not correct! Salah " + pin_input);
+            		    //$(errorElement).html("PIN is not correct! Salah " + pin_input);
+            		    //alert('PIN Salah!');
+                        $("#pin_error").append('<p class="text-danger">PIN Salah</p>');
             	    } else {
             		    //alert('code is correct!');
                         var url = '{% url "attendance_scanner" %}';
@@ -70,10 +72,12 @@
             <div class="card mb-5 mt-5">
                 <div class="card-body">
                     <h1 class="card-title">PIN</h1>
-                    <div class="mt-3 mb-3">
-                        <input type="text" style="outline: 1px solid black; border: 1px solid black;" id="pincode-input1"  >
+                    <div class="mt-3 mb-3" style="border: 1px solid black;">
+                        <input type="text" id="pincode-input1"  >
                     </div>
-                    <a href="#" class="btn btn-lg btn-warning" onclick="javascript:$('#pincode-input1').pincodeInput().data('plugin_pincodeInput').clear()">Ulangi</a>
+                    <div id="pin_error">
+                    </div>
+                    <a href="#" class="btn btn-lg btn-warning" onclick="javascript:$('#pincode-input1').pincodeInput().data('plugin_pincodeInput').clear(); javascript:$('#pin_error').empty();">Ulangi</a>
                 </div>
             </div>
         </div>
