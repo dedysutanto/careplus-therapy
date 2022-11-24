@@ -35,7 +35,8 @@ def get_student(request):
         students = Students.objects.filter(
             name__icontains=query,
             call_name__icontains=query,
-            session_scheduled__gt=0
+        ).exclude(
+            session_scheduledt=0
         ).order_by('id')
         results = []
         place_json = {}
