@@ -15,18 +15,18 @@ def is_ajax(request):
 def construct_name(obj):
     return '{}. {} ({})'.format(obj.id, obj.name, obj.call_name)
 
-'''
 def get_pin(request):
+    data = {}
     if is_ajax(request=request):
         query = request.GET.get("term", "")
         #print(query)
         student = Students.objects.get(
             id=query,
         )
-        data = { 'pin': student.pin }
+        data = json.dumps(student.pin)
+        print(data)
     mimetype = "application/json"
     return HttpResponse(data, mimetype)
-'''
 
 def get_student(request):
     if is_ajax(request=request):
@@ -42,7 +42,7 @@ def get_student(request):
             place_json = construct_name(student)
             results.append(place_json)
         data = json.dumps(results)
-
+        print(data)
     mimetype = "application/json"
     return HttpResponse(data, mimetype)
 
