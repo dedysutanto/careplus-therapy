@@ -14,7 +14,7 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script> 
         function clickButtonHadir(schedule_id, student_id, student_p) {
-            alert('Element ID ' + schedule_id + ' ' + student_id + ' ' + student_p);
+            //alert('Element ID ' + schedule_id + ' ' + student_id + ' ' + student_p);
             var url = '{% url "attendance_pin" %}';
             var form = $('<form action="' + url + '" method="post">' +
                 '{% csrf_token %}' +
@@ -29,7 +29,7 @@
             let text_split = elem.val().split(".");
             if (text_split.length > 1) {
                 let nia = text_split[0];
-                console.log(nia);
+                //console.log(nia);
                 $.ajax('{% url 'attendance_get-student-detail' %}?term=' + nia,
                     {
                         success: function(data, status, jqHXR) {
@@ -38,7 +38,7 @@
                                 elem.val('');
                                 elem.focus();
                             } else {
-                                console.log(data);
+                                //console.log(data);
                                 $("#section_detail_student").css('display', 'block');
                                 $("#schedules_detail").empty();
                                 $("#schedules_detail").append('<h1>Jadwal Terapi Hari Ini</h1>');
