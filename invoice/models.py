@@ -107,7 +107,7 @@ class Invoices(ClusterableModel):
             #print(last_invoice.number)
             if last_invoice:
                 last_number = int(last_invoice.number[9:])
-                print("Last Invoice Number"last_number)
+                print("Last Invoice Number", last_number)
             else:
                 last_number = 0
 
