@@ -192,6 +192,8 @@ class Schedules(models.Model):
         # print(self.session)
         #self.end = self.start
         self.end = time(hour=self.start.hour + self.session, minute=self.start.minute)
+        if self.is_done:
+            self.is_arrived = self.is_done
 
         return super(Schedules, self).save()
 
