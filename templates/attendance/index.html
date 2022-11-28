@@ -43,9 +43,24 @@
                                 $("#schedules_detail").empty();
                                 $("#schedules_detail").append('<h1>Jadwal Terapi Hari Ini</h1>');
                                 $("#schedules_detail").append('<hr />');
-                                $("#schedules_detail_next").empty();
+
+                                //$("#schedules_detail_next").empty();
+                                $("#tbody_schedules").empty();
+                                /*
                                 $("#schedules_detail_next").append('<h1>Jadwal Terapi Berikutnya</h1>');
-                                $("#schedules_detail_next").append('<hr />');
+                                $("#schedules_detail_next").append('<table class="table table-striped" width="100%">');
+                                $("#schedules_detail_next").append('<thead>');
+                                $("#schedules_detail_next").append('<tr>');
+                                $("#schedules_detail_next").append('<th>Tanggal</th>');
+                                $("#schedules_detail_next").append('<th>Sesi</th>');
+                                $("#schedules_detail_next").append('<th>Activity</th>');
+                                $("#schedules_detail_next").append('<th>Therapist</th>');
+                                $("#schedules_detail_next").append('</tr>');
+                                $("#schedules_detail_next").append('</thead>');
+                                $("#schedules_detail_next").append('<tbody id="tbody_schedules">');
+                                $("#schedules_detail_next").append('</tbody>');
+                                $("#schedules_detail_next").append('</table>');
+                                */
 
                                 let student = data['student'];
                                 let schedules = data['schedules'];
@@ -70,13 +85,46 @@
 
                                 }       
                                 if (schedules_next) {
+                                    //console.log(schedules_next);
+                                    let tbody_elem = $("#tbody_schedules");
+                                    //console.log(tbody_elem);
+                                    let today = new Date();
                                     for(let i=0; i<schedules_next.length; i++) {
-                                        var the_date = new Date(schedules_next[i].date).toLocaleDateString('id-ID', options);
+                                        var current_date = new Date(schedules_next[i].date);
+                                        //var the_date = new Date(schedules_next[i].date).toLocaleDateString('id-ID', options);
+                                        var the_date = current_date.toLocaleDateString('id-ID', options);
+                                        tbody_elem.append('<tr>');
+                                        tbody_elem.append('<td>' + the_date + '</td>');
+                                        tbody_elem.append('<td>' + schedules_next[i].start + ' - ' + schedules_next[i].end + '</td>');
+                                        tbody_elem.append('<td>' + schedules_next[i].activity + '</td>');
+                                        tbody_elem.append('<td>' + schedules_next[i].therapist + '</td>');
+                                        var is_done_text = '<span class="text-success">Sesi Selesai</span>';
+                                        //console.log(today);
+                                        //console.log(current_date);
+                                        if (! schedules_next[i].is_done) {
+                                            if (current_date >= today) {
+                                                is_done_text = '<span class="text-primary">Sesi Terjadwal</span>';
+                                            }
+                                            else
+                                            {
+                                                is_done_text = '<span class="text-danger">Sesi Kadaluarsa</span>';
+                                            }
+                                        }
+                                        tbody_elem.append('<td>' + is_done_text + '</td>');
+                                        tbody_elem.append('</tr>');
+                                        //$("#tbody_schedules").append('<tr>');
+                                        //$("#tbody_schedules").append('<td>' + the_date + '</td>');
+                                        //$("#tbody_schedules").append('<td>' + schedules_next[i].start + ' - ' + schedules_next[i].end + '</td>');
+                                        //$("#tbody_schedules").append('<td>' + schedules_next[i].activity + '</td>');
+                                        //$("#tbody_schedules").append('<td>' + schedules_next[i].therapist + '</td>');
+                                        //$("#tbody_schedules").append('</tr>');
+                                            /*
                                         $("#schedules_detail_next").append('<h2>' + the_date + '</h2>');
                                         $("#schedules_detail_next").append('<h4>Jam: ' + schedules_next[i].start + ' - ' + schedules_next[i].end + '</h4>');
                                         $("#schedules_detail_next").append('<h4>Therapist: ' + schedules_next[i].therapist + '</h4>');
                                         $("#schedules_detail_next").append('<h4>Activity: ' + schedules_next[i].activity + '</h4>');
                                         $("#schedules_detail_next").append('<br />');
+                                        */
                                     }
                                 } else {
                                     $("#schedules_detail_next").append('<h4>Tidak ada jadwal terapi.</h4>');
@@ -212,8 +260,18 @@ function validateEmail(elem) {
         </div>
         <div class="card mb-3">
             <div id="schedules_detail_next" class="card-body">
-                <h1>Jadwal Terapi Berikutnya</h1>
-                <hr />
+                <h1>Jadwal Terapi Seluruhnya</h1>
+                <table class="table table-striped" width="100%">
+                    <thead>
+                        <th>Tanggal</th>
+                        <th>Sesi</th>
+                        <th>Activity</th>
+                        <th>Therapist</th>
+                        <th>Terapi Selesai</th>
+                    </thead>
+                    <tbody id="tbody_schedules">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

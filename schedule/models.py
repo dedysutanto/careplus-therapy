@@ -34,6 +34,7 @@ class Schedules(models.Model):
     session = models.IntegerField('Sesi', choices=SESSION, default=1)
     additional_info = models.TextField('Keterangan', blank=True, null=True)
     is_done = models.BooleanField('Terapi Selesai', default=False)
+    is_arrived = models.BooleanField('Sudah Hadir', default=False)
 
     student = models.ForeignKey(
         Students,
@@ -76,7 +77,7 @@ class Schedules(models.Model):
             FieldPanel('therapist'),
             FieldPanel('activity'),
             FieldPanel('additional_info'),
-            FieldPanel('is_done')
+            FieldRowPanel([FieldPanel('is_arrived'), FieldPanel('is_done')])
         ], heading='Setup Schedule', classname='')
     ]
 

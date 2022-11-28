@@ -24,7 +24,7 @@ def get_pin(request):
             id=query,
         )
         data = json.dumps(student.pin)
-        print(data)
+        #print(data)
     mimetype = "application/json"
     return HttpResponse(data, mimetype)
 
@@ -42,7 +42,7 @@ def get_student(request):
             place_json = construct_name(student)
             results.append(place_json)
         data = json.dumps(results)
-        print(data)
+        #print(data)
     mimetype = "application/json"
     return HttpResponse(data, mimetype)
 
@@ -62,8 +62,8 @@ def get_student_detail(request):
             )
             schedules_next = Schedules.objects.filter(
                 student=student,
-                date__gt=today,
-                is_done=False,
+                #date__gt=today,
+                #is_done=False,
             ).order_by('date')
         except ObjectDoesNotExist:
             student = None
@@ -110,6 +110,7 @@ def get_student_detail(request):
                     schedule_list['end'] = schedule.end
                     schedule_list['therapist'] = therapist.name
                     schedule_list['activity'] = activity.name
+                    schedule_list['is_done'] = schedule.is_done
                     schedules_array.append(schedule_list)
 
                 place_json['schedules_next'] = schedules_array

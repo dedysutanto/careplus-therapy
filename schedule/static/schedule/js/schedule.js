@@ -1,4 +1,15 @@
 $(document).ready(function() {
+    $('#id_is_arrived').prop('disabled', true);
+    /*
+    $('#id_is_done').change(function() {
+        if(this.checked) {
+            var returnVal = confirm("Are you sure?");
+            $(this).prop("checked", returnVal);
+            $('#id_is_arrived').prop("checked", "checked");
+        }
+        $('#textbox1').val(this.checked);        
+    });
+    */
     if ($('#id_is_done').is(":checked")) {
 
         $('input').each(

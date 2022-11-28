@@ -38,24 +38,22 @@
             var pin_student = '';
             $(document).ready(function () {
                 var pin_input = 0;
-                var pin_student = '';
                 const student_id = {{ student_id }};
-                //const student_p = {{ student_p }}
+
+                $.ajax('{% url 'attendance_get-pin' %}?term=' + student_id,
+                    {
+                        success: function(data, status, jqHXR) {
+                            window.pin_student = data;
+                            console.log(window.pin_student);
+                        }
+                    }
+                );
 
                 $('#pincode-input1').pincodeInput({
                     hidedigits: true, complete: function (value, e, errorElement) {
 
                         $("#pincode-callback").html("This is the 'complete' callback firing. Current value: " + value);
             	
-            	    // check the code
-                    $.ajax('{% url 'attendance_get-pin' %}?term=' + student_id,
-                        {
-                            success: function(data, status, jqHXR) {
-                                window.pin_student = data;
-                                console.log(window.pin_student);
-                            }
-                        }
-                    );
             	    if(value != window.pin_student){
                         pin_input += 1;
             		    //$(errorElement).html("PIN is not correct! Salah " + pin_input);
