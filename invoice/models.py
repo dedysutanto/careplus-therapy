@@ -102,9 +102,12 @@ class Invoices(ClusterableModel):
             self.clinic = current_user.clinic
 
         if len(str(self.number)) != 12:
-            number = Invoices.objects.filter(user=self.user, student=self.student).count() + 1
+            #number = Invoices.objects.filter(user=self.user, student=self.student).count() + 1
+            last_invoice = Invoices.objects.filter(user=self.user, student=self.student).last()
+            last_number = last_invoice.number[9:0]
             prefix = 'INV{:03d}{:03d}'.format(self.user.id, self.student.id)
-            self.number = '{}{:03d}'.format(prefix, number)
+            #self.number = '{}{:03d}'.format(prefix, number)
+            self.number = '{}{:03d}'.format(prefix, int(last_number)+1 )
             print('Invoice', self.number)
 
         return super(Invoices, self).save()
