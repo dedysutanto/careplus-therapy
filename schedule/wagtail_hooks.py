@@ -55,7 +55,7 @@ class SchedulesAdmin(ModelAdmin):
     add_to_admin_menu = True  # or False to exclude your model from the menu
     list_display = ['date', 'start', 'end', 'student', 'therapist', 'activity',
                     'session', 'is_done', 'additional_info']
-    search_fields = ['student__name', 'therapist__name', 'activity__name']
+    search_fields = ['date', 'student__name', 'therapist__name', 'activity__name']
     list_filter = ['date', 'therapist__name', 'is_done']
     ordering = ['-date', 'start']
     list_export = ['date', 'start', 'end', 'student', 'therapist', 'activity', 'is_done']
@@ -77,3 +77,4 @@ class SchedulesAdmin(ModelAdmin):
 
 
 modeladmin_register(SchedulesAdmin)
+
