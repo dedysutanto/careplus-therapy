@@ -58,7 +58,7 @@ class SchedulesAdmin(ModelAdmin):
     search_fields = ['date', 'student__name', 'therapist__name', 'activity__name']
     list_filter = ['date', 'therapist__name', 'is_done']
     ordering = ['-date', 'start']
-    list_export = ['date', 'start', 'end', 'student', 'therapist', 'activity', 'is_done']
+    list_export = ['date', 'start', 'end', 'session', 'student', 'therapist', 'activity', 'is_done']
     edit_view_class = SchedulesEditView
     permission_helper_class = SchedulesPermissionHelper
     form_view_extra_js = ['schedule/js/schedule.js']
