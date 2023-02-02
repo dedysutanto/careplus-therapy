@@ -140,7 +140,8 @@ class Schedules(models.Model):
         '''
         Check if the therapist schedules are conflict
         '''
-        therapist_schedules = Schedules.objects.filter(therapist=self.therapist, is_done=False)
+        #therapist_schedules = Schedules.objects.filter(therapist=self.therapist, is_done=False)
+        therapist_schedules = Schedules.objects.filter(therapist=self.therapist)
 
         end = time(hour=self.start.hour + self.session, minute=self.start.minute)
 
