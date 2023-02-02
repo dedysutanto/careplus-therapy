@@ -117,6 +117,7 @@ class Invoices(ClusterableModel):
             self.number = '{}{:03d}'.format(prefix, last_number + 1)
             print('Invoice', self.number)
 
+            '''
             is_no_number = False
             counter = 1
             while not is_no_number
@@ -127,6 +128,7 @@ class Invoices(ClusterableModel):
                     print('Invoice', self.number)
                 except ObjectDoesNotExist:
                     is_no_number = True
+            '''
 
         return super(Invoices, self).save()
 
