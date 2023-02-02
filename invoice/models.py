@@ -4,6 +4,7 @@ from django.db.models import Sum
 from django.core.exceptions import ValidationError
 from crum import get_current_user
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
 from wagtail.admin.forms import WagtailAdminPageForm
@@ -115,6 +116,17 @@ class Invoices(ClusterableModel):
             #self.number = '{}{:03d}'.format(prefix, number)
             self.number = '{}{:03d}'.format(prefix, last_number + 1)
             print('Invoice', self.number)
+
+            is_no_number = False
+            counter = 1
+            while not is_no_number
+                try:
+                    Invoices.objects.get(number=self.number)
+                    counter += 1
+                    self.number = '{}{:03d}'.format(prefix, last_number + counter)
+                    print('Invoice', self.number)
+                except ObjectDoesNotExist:
+                    is_no_number = True
 
         return super(Invoices, self).save()
 
